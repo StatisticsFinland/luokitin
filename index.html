@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+
+<script type="module" src="src/tk-luokkahaku.js"></script>
+<script type="module" src="src/tk-luokituspuu.js"></script>
+<script type="module" src="src/tk-valinta.js"></script>
+<script type="module" src="src/tk-lahdeluokitus.js"></script>
+
+<style>
+	
+	.all {
+		color: black;
+		font-family: sans-serif;
+		font-size: 1.25em;
+		line-height: 1.5em;
+		padding-left: 30px;
+	}
+
+	.search {
+		width: 50%;
+		padding-bottom: 15px;
+	}
+
+	.tree {
+		width: 50%;
+		font-size: 1.1em;
+		display: inline-block;
+	}
+
+	.selected {
+		position: fixed;
+		display: inline-block;
+		width: 500px;
+		padding-right: 25px;
+		padding-left: 15px;
+		font-size: 1.1em;
+		z-index: 2;
+	}
+
+	.lahdeluokitus {
+		padding-bottom: 70px;
+	}
+
+</style>
+</head>
+
+<body>
+
+	<div class="all lahdeluokitus">
+		<tk-lahdeluokitus language="fi" classification="rakennus_1_20180712"></tk-lahdeluokitus>
+	</div>
+
+	<div class="all search">
+		<tk-luokkahaku language="fi" classification="rakennus_1_20180712"></tk-luokkahaku>
+	</div>
+
+	<div class="all tree">
+		<tk-luokituspuu language="fi" classification="rakennus_1_20180712"></tk-luokituspuu>
+	</div>
+
+	<div class="all selected">
+		<tk-valinta language="fi"></tk-valinta>
+	</div>
+
+</body>
+
+</html>

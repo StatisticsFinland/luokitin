@@ -1,0 +1,33 @@
+{
+  "name": "tk-luokitin",
+  "description": "rakennusluokitin",
+  "dependencies": {
+    "@polymer/iron-input": "^3.0.1",
+    "@polymer/iron-list": "^3.0.1",
+    "@polymer/paper-button": "^3.0.1",
+    "@polymer/paper-input": "^3.0.1",
+    "@polymer/paper-styles": "^3.0.1",
+    "@polymer/polymer": "^3.0.0"
+  },
+  "devDependencies": {
+    "@webcomponents/webcomponentsjs": "^2.0.0",
+    "whatwg-fetch": "^3.0.0"
+  },
+  "version": "1.0.0",
+  "main": "src/tk-luokituspuu.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/StatisticsFinland/luokitin"
+  },
+  "keywords": [
+    "rakennusluokitin"
+  ],
+  "author": "Tilastokeskus",
+  "license": "ISC"
+}
