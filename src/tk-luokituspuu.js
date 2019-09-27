@@ -128,8 +128,7 @@ class TkLuokituspuu extends PolymerElement {
 
   fetchData() {
     this.classes = []
-    let url = "https://data.stat.fi/api/classifications/v1/classifications/" + this.classification + "/classificationItems?content=data&meta=max&lang=" + this.language
-    console.log("Haetaan luokituspuu osoitteesta: " + url)
+    let url = "https://data.stat.fi/api/classifications/v2/classifications/" + this.classification + "/classificationItems?content=data&meta=max&lang=" + this.language
     fetch(url)
       .then((response) => {
         return response.json();
@@ -147,7 +146,7 @@ class TkLuokituspuu extends PolymerElement {
   }
 
   fetchCorrespondenceClasses() {
-    let url = "https://data.stat.fi/api/classifications/v1/correspondenceTables/" + this.classification + "%23rakennus_1_20180712/maps?content=data&meta=max&lang=" + this.language
+    let url = "https://data.stat.fi/api/classifications/v2/correspondenceTables/" + this.classification + "%23rakennus_1_20180712/maps?content=data&meta=max&lang=" + this.language
     console.log("Haetaan vastinluokat osoitteesta: " + url)
     fetch(url)
       .then((response) => {
@@ -276,15 +275,16 @@ class TkLuokituspuu extends PolymerElement {
         item.intendation = "                    "
       }
       if (item.explanatoryNotes.length > 0) {
-        item.note = item.explanatoryNotes[0].generalNote[0]
+        const notes = item.explanatoryNotes[0]
+        item.note = notes.generalNote[notes.generalNote.length-1]
         if (item.explanatoryNotes[0].excludes) {
-          item.excludes = item.explanatoryNotes[0].excludes
+          item.excludes = notes.excludes[notes.excludes.length-1]
         }
         if (item.explanatoryNotes[0].includes) {
-          item.includes = item.explanatoryNotes[0].includes
+          item.includes = notes.includes[notes.includes.length-1]
         }
         if (item.explanatoryNotes[0].includesAlso) {
-          item.includesAlso = item.explanatoryNotes[0].includesAlso
+          item.includesAlso = notes.includesAlso[notes.includesAlso.length-1]
         }
       } else {
         item.note = this.noNote
@@ -358,15 +358,15 @@ class TkLuokituspuu extends PolymerElement {
       item.targetItem.name = item.targetItem.classificationItemNames[0].name
       item.targetItem.keywords = item.targetItem.classificationIndexEntry[0].text
       if (item.targetItem.explanatoryNotes.length > 0) {
-        item.targetItem.note = item.targetItem.explanatoryNotes[0].generalNote[0]
+        item.targetItem.note = item.targetItem.explanatoryNotes[0].generalNote[item.targetItem.explanatoryNotes[0].generalNote.length-1]
         if (item.targetItem.explanatoryNotes[0].excludes) {
-          item.targetItem.excludes = item.targetItem.explanatoryNotes[0].excludes
+          item.targetItem.excludes = item.targetItem.explanatoryNotes[0].excludes[item.targetItem.explanatoryNotes[0].excludes.length-1]
         }
         if (item.targetItem.explanatoryNotes[0].includes) {
-          item.targetItem.includes = item.targetItem.explanatoryNotes[0].includes
+          item.targetItem.includes = item.targetItem.explanatoryNotes[0].includes[item.targetItem.explanatoryNotes[0].includes.length-1]
         }
         if (item.targetItem.explanatoryNotes[0].includesAlso) {
-          item.targetItem.includesAlso = item.targetItem.explanatoryNotes[0].includesAlso
+          item.targetItem.includesAlso = item.targetItem.explanatoryNotes[0].includesAlso[item.targetItem.explanatoryNotes[0].includesAlso.length-1]
         }
       } else {
         item.note = this.noNote

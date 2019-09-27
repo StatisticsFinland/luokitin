@@ -210,8 +210,7 @@ class TkLuokkahaku extends PolymerElement {
 
   fetchData() {
     this.results = []
-    let url = "https://data.stat.fi/api/classifications/v1/classifications/" + this.classification + "/classificationItems?content=data&meta=max&lang=" + this.language
-    console.log("Haetaan dataa osoitteesta: " + url)
+    let url = "https://data.stat.fi/api/classifications/v2/classifications/" + this.classification + "/classificationItems?content=data&meta=max&lang=" + this.language
     fetch(url)
       .then((response) => {
         return response.json();
@@ -258,7 +257,7 @@ class TkLuokkahaku extends PolymerElement {
     this.results = x;
   }
 
-  // Assigns data to new data fields to allow access in HTML-template. There was a problem in reaching indexes of the original data e.g. explanatoryNotes[0].
+  // Assigns data of correspondence classes to new data fields to allow access in HTML-template. There was a problem in reaching indexes of the original data e.g. explanatoryNotes[0].
   editTargetItems(json) {
     for (let item of json) {
       item.sourceItem.localId = item.sourceItem.localId.replace("/", "-")   // Changed to allow making localId an id of an html element. Run to problems when using "/".
@@ -268,15 +267,15 @@ class TkLuokkahaku extends PolymerElement {
       item.targetItem.name = item.targetItem.classificationItemNames[0].name
       item.targetItem.keywords = item.targetItem.classificationIndexEntry[0].text
       if (item.targetItem.explanatoryNotes.length > 0) {
-        item.targetItem.note = item.targetItem.explanatoryNotes[0].generalNote[0]
+        item.targetItem.note = item.targetItem.explanatoryNotes[0].generalNote[item.targetItem.explanatoryNotes[0].generalNote.length-1]
         if (item.targetItem.explanatoryNotes[0].excludes) {
-          item.targetItem.excludes = item.targetItem.explanatoryNotes[0].excludes
+          item.targetItem.excludes = item.targetItem.explanatoryNotes[0].excludes[item.targetItem.explanatoryNotes[0].excludes.length-1]
         }
         if (item.targetItem.explanatoryNotes[0].includes) {
-          item.targetItem.includes = item.targetItem.explanatoryNotes[0].includes
+          item.targetItem.includes = item.targetItem.explanatoryNotes[0].includes[item.targetItem.explanatoryNotes[0].includes.length-1]
         }
         if (item.targetItem.explanatoryNotes[0].includesAlso) {
-          item.targetItem.includesAlso = item.targetItem.explanatoryNotes[0].includesAlso
+          item.targetItem.includesAlso = item.targetItem.explanatoryNotes[0].includesAlso[item.targetItem.explanatoryNotes[0].includesAlso.length-1]
         }
       } else {
         item.note = ""
@@ -300,15 +299,15 @@ class TkLuokkahaku extends PolymerElement {
       item.name = item.classificationItemNames[0].name
       item.keywords = item.classificationIndexEntry[0].text
       if (item.explanatoryNotes.length > 0) {
-        item.note = item.explanatoryNotes[0].generalNote[0]
+        item.note = item.explanatoryNotes[0].generalNote[item.explanatoryNotes[0].generalNote.length-1] // Gets the updated note from index [1] if it exists, otherwise gets the original note from index [0]
         if (item.explanatoryNotes[0].excludes) {
-          item.excludes = item.explanatoryNotes[0].excludes
+          item.excludes = item.explanatoryNotes[0].excludes[item.explanatoryNotes[0].excludes.length-1]
         }
         if (item.explanatoryNotes[0].includes) {
-          item.includes = item.explanatoryNotes[0].includes
+          item.includes = item.explanatoryNotes[0].includes[item.explanatoryNotes[0].includes.length-1]
         }
         if (item.explanatoryNotes[0].includesAlso) {
-          item.includesAlso = item.explanatoryNotes[0].includesAlso
+          item.includesAlso = item.explanatoryNotes[0].includesAlso[item.explanatoryNotes[0].includesAlso.length-1]
         }
       } else {
         item.note = ""

@@ -68,7 +68,7 @@ class TkLuokitushaku extends PolymerElement {
   }
 
   fetchData(searchParam) {
-    let url = "https://data.stat.fi/api/classifications/v1/search/classifications?searchParam=" + searchParam + "&content=data&meta=max&lang=fi"
+    let url = "https://data.stat.fi/api/classifications/v2/search/classifications?searchParam=" + searchParam + "&content=data&meta=max&lang=fi"
     console.log("Haetaan luokitukset osoitteesta " + url)
     fetch(url)
       .then((response) => {
