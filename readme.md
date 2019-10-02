@@ -12,7 +12,7 @@ Lataa luokitin.
 
 Asenna [Polymer](https://polymer-library.polymer-project.org/3.0/docs/install-3-0) esim. ```npm install -g polymer-cli```.
 
-Asenna luokittimen paketit esim. ```npm install.```
+Asenna luokittimen paketit esim. ```npm install```.
 
 Aja ```polymer serve```.
 
