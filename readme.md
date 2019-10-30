@@ -23,6 +23,8 @@ Avaa selaimessa http://127.0.0.1:8081/.
 
 Katso Polymerin tarkemmat [ohjeet](https://polymer-library.polymer-project.org/3.0/docs/apps/build-for-production).
 
+HUOM! Buildaus on tuottanut ongelmia ja saattaa vaatia debugaamista, eikä välttämättä ole näin yksinkertaista. Jos projekti saadaan jatkokehitykseen, pyritään mm. tämä korjaamaan poistamalla Polymer-kirjasto ja refaktoroimalla komponentit ilman mitään kirjastoa.
+
 ### Komponentit
 
 **tk-luokkahaku**
