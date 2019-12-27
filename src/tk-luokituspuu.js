@@ -1,4 +1,4 @@
-import { html, PolymerElement } from '@polymer/polymer/polymer-element.js';
+import {html, PolymerElement} from '@polymer/polymer/polymer-element.js';
 import '@polymer/iron-input/iron-input.js'
 import '@polymer/polymer/lib/elements/dom-repeat.js'
 import '../node_modules/whatwg-fetch/fetch.js'
@@ -13,10 +13,12 @@ class TkLuokituspuu extends PolymerElement {
       <style include="style-element">
       </style>
       <div class="tk tk-luokituspuu-body">
-        <h1 class="tk-luokituspuu-h1">{{classificationName}}</h1> <a on-click="handleOpen" class="tk-luokituspuu-open">{{openAllText}}</a>
+        <div class="tk-luokituspuu-header">
+          <h1 class="tk-luokituspuu-h1">{{classificationName}}</h1> <a on-click="handleOpen" class="tk-luokituspuu-open">{{openAllText}}</a>
+        </div>
         <ul class="tk-luokituspuu-ul">
             <template class="tk-luokituspuu-template" is="dom-repeat" items="{{classes}}" filter="isVisible" observe="visible item.visible">
-              <li class="tk-luokituspuu-li" on-click="open" id="{{item.localId}}" title="{{item.note}}" name="{{item.name}}"><span class="intendation tk-luokituspuu-intendation">{{item.intendation}}</span><span class="classCode tk-luokituspuu-classCode">{{item.code}}</span>      <span class="className tk-luokituspuu-className">{{item.name}}</span></li>
+              <li class="tk-luokituspuu-li" on-click="open" id="{{item.localId}}" title="{{item.name}}"><span class="intendation tk-luokituspuu-intendation">{{item.intendation}}</span><span class="classCode tk-luokituspuu-classCode">{{item.code}}</span>      <span class="className tk-luokituspuu-className">{{item.name}}</span></li>
             </template>
         </ul>
       </div>
@@ -51,7 +53,8 @@ class TkLuokituspuu extends PolymerElement {
       noNote: {
         type: String,
         value: "Luokalla ei ole kuvausta."
-      }
+      },
+      level: Number,
     }
   }
 
@@ -89,8 +92,22 @@ class TkLuokituspuu extends PolymerElement {
       this.classes.forEach(function (value, index) {
         if (item.id === value.localId || item.id === value.name) {
           for (let i = index; i < this.classes.length; i++) {
-            if (this.classes[i].parentItemLocalId === value.localId) {    // If a class has the same parent as current class, open it.
-              this.classes[i].visible = true
+            if (this.classes[i].parentItemLocalId === value.localId) {    // If a class has the same parent as current class...
+              if (this.classes[i].visible === false) {
+                this.classes[i].visible = true  // Open it.
+              } else {
+                this.classes[i].visible = false  // Close it.
+                for (let j = i; j < this.classes.length; j++) {
+                  if (this.classes[j].parentItemLocalId === this.classes[i].localId) {
+                    this.classes[j].visible = false
+                  }
+                  for (let k = i; k < this.classes.length; k++) {
+                    if (this.classes[k].parentItemLocalId === this.classes[j].localId) {
+                      this.classes[k].visible = false
+                    }
+                  }
+                }
+              }
             }
           }
         }
@@ -126,11 +143,12 @@ class TkLuokituspuu extends PolymerElement {
     }
   }
 
-  fetchData() {
+  async fetchData() {
     this.classes = []
     let url = "https://data.stat.fi/api/classifications/v2/classifications/" + this.classification + "/classificationItems?content=data&meta=max&lang=" + this.language
-    fetch(url)
+    await fetch(url)
       .then((response) => {
+        this.shadowRoot.querySelector('.tk-luokituspuu-body').setAttribute('hidden', true);
         return response.json();
       })
       .then((json) => {
@@ -141,13 +159,13 @@ class TkLuokituspuu extends PolymerElement {
       })
       .then((json) => {
         this.renderData(json)
+        this.shadowRoot.querySelector('.tk-luokituspuu-body').removeAttribute('hidden');
       })
 
   }
 
   fetchCorrespondenceClasses() {
     let url = "https://data.stat.fi/api/classifications/v2/correspondenceTables/" + this.classification + "%23rakennus_1_20180712/maps?content=data&meta=max&lang=" + this.language
-    console.log("Haetaan vastinluokat osoitteesta: " + url)
     fetch(url)
       .then((response) => {
         return response.json();
@@ -250,7 +268,11 @@ class TkLuokituspuu extends PolymerElement {
   // Assigns data to new data fields to allow access in HTML-template. There was a problem in reaching indexes of the original data e.g. explanatoryNotes[0].
   renderData(json) {
     this.classificationName = json[0].classification.classificationName[0].name
+    let levelCalc = 0;
     for (let item of json) {
+      if (item.level > levelCalc) {
+        levelCalc = item.level
+      }
       item.localId = item.localId.replace("/", "-")
       if (item.parentItemLocalId) {
         item.parentItemLocalId = item.parentItemLocalId.replace("/", "-")
@@ -276,21 +298,22 @@ class TkLuokituspuu extends PolymerElement {
       }
       if (item.explanatoryNotes.length > 0) {
         const notes = item.explanatoryNotes[0]
-        item.note = notes.generalNote[notes.generalNote.length-1]
+        item.note = notes.generalNote[notes.generalNote.length - 1]
         if (item.explanatoryNotes[0].excludes) {
-          item.excludes = notes.excludes[notes.excludes.length-1]
+          item.excludes = notes.excludes[notes.excludes.length - 1]
         }
         if (item.explanatoryNotes[0].includes) {
-          item.includes = notes.includes[notes.includes.length-1]
+          item.includes = notes.includes[notes.includes.length - 1]
         }
         if (item.explanatoryNotes[0].includesAlso) {
-          item.includesAlso = notes.includesAlso[notes.includesAlso.length-1]
+          item.includesAlso = notes.includesAlso[notes.includesAlso.length - 1]
         }
       } else {
         item.note = this.noNote
       }
       this.push("classes", item)
     }
+    this.level = levelCalc
     window.dispatchEvent(new CustomEvent('tk-lataus-valmis', {
       detail: this.classification
     }))
@@ -313,17 +336,8 @@ class TkLuokituspuu extends PolymerElement {
       this.selectedClass = e.detail
       this.openTree(e)
       this.renderListElements()
-      this.scrollIntoView()
       this.render()
     })
-  }
-
-  scrollIntoView() {
-    if (this.shadowRoot.querySelector(".selected") !== null) {
-      this.shadowRoot.querySelector(".selected").scrollIntoView({
-        behavior: "smooth",
-      })
-    }
   }
 
   openTree(e) {
@@ -358,15 +372,15 @@ class TkLuokituspuu extends PolymerElement {
       item.targetItem.name = item.targetItem.classificationItemNames[0].name
       item.targetItem.keywords = item.targetItem.classificationIndexEntry[0].text
       if (item.targetItem.explanatoryNotes.length > 0) {
-        item.targetItem.note = item.targetItem.explanatoryNotes[0].generalNote[item.targetItem.explanatoryNotes[0].generalNote.length-1]
+        item.targetItem.note = item.targetItem.explanatoryNotes[0].generalNote[item.targetItem.explanatoryNotes[0].generalNote.length - 1]
         if (item.targetItem.explanatoryNotes[0].excludes) {
-          item.targetItem.excludes = item.targetItem.explanatoryNotes[0].excludes[item.targetItem.explanatoryNotes[0].excludes.length-1]
+          item.targetItem.excludes = item.targetItem.explanatoryNotes[0].excludes[item.targetItem.explanatoryNotes[0].excludes.length - 1]
         }
         if (item.targetItem.explanatoryNotes[0].includes) {
-          item.targetItem.includes = item.targetItem.explanatoryNotes[0].includes[item.targetItem.explanatoryNotes[0].includes.length-1]
+          item.targetItem.includes = item.targetItem.explanatoryNotes[0].includes[item.targetItem.explanatoryNotes[0].includes.length - 1]
         }
         if (item.targetItem.explanatoryNotes[0].includesAlso) {
-          item.targetItem.includesAlso = item.targetItem.explanatoryNotes[0].includesAlso[item.targetItem.explanatoryNotes[0].includesAlso.length-1]
+          item.targetItem.includesAlso = item.targetItem.explanatoryNotes[0].includesAlso[item.targetItem.explanatoryNotes[0].includesAlso.length - 1]
         }
       } else {
         item.note = this.noNote

@@ -17,32 +17,62 @@
 		font-family: sans-serif;
 		font-size: 1.25em;
 		line-height: 1.5em;
-		padding-left: 30px;
+	}
+
+	.flex-wrapper {
+		display: flex;
+	}
+
+	.flex-search {
+		display: flex;
+		flex: auto;
+		flex-direction: column;
+		margin-left: 10px;
+	}
+
+	.flex-tree {
+		flex: auto;
+		max-width: 50%;
 	}
 
 	.search {
-		width: 50%;
 		padding-bottom: 15px;
 	}
 
 	.tree {
-		width: 50%;
 		font-size: 1.1em;
-		display: inline-block;
 	}
 
 	.selected {
+		width: 47.5%;
 		position: fixed;
-		display: inline-block;
-		width: 500px;
-		padding-right: 25px;
-		padding-left: 15px;
 		font-size: 1.1em;
-		z-index: 2;
+		margin-top: 55px;
 	}
 
 	.lahdeluokitus {
-		padding-bottom: 70px;
+		display: flex;
+		margin-bottom: 25px;
+	}
+
+	@media (max-width:960px) {
+		.flex-wrapper {
+			flex-direction: column;
+		}
+
+		.lahdeluokitus {
+			flex-direction: column;
+		}
+
+		.selected {
+			position: relative;
+			width: 100%;
+			margin-top: 10px;
+		}
+
+		.tree {
+			display: none;
+		}
 	}
 </style>
 </head>
@@ -53,16 +83,20 @@
 		<tk-lahdeluokitus language="fi" classification="rakennus_1_20180712"></tk-lahdeluokitus>
 	</div>
 
-	<div class="all search">
-		<tk-luokkahaku language="fi" classification="rakennus_1_20180712"></tk-luokkahaku>
-	</div>
-
-	<div class="all tree">
-		<tk-luokituspuu language="fi" classification="rakennus_1_20180712"></tk-luokituspuu>
-	</div>
-
-	<div class="all selected">
-		<tk-valinta language="fi"></tk-valinta>
+	<div class="flex-wrapper">
+		<div class="flex-tree">
+			<div class="all tree">
+				<tk-luokituspuu language="fi" classification="rakennus_1_20180712"></tk-luokituspuu>
+			</div>
+		</div>
+		<div class="flex-search">
+			<div class="all search">
+				<tk-luokkahaku language="fi" classification="rakennus_1_20180712"></tk-luokkahaku>
+			</div>
+			<div class="all selected">
+				<tk-valinta language="fi"></tk-valinta>
+			</div>
+		</div>
 	</div>
 
 </body>

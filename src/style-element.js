@@ -26,7 +26,15 @@ styleElement.innerHTML =
       background-color: #ececec;                    
       color: black;                                
       font-size: 0.9em;
-      @apply(--shadow-elevation-2dp);                                              
+      @apply(--shadow-elevation-2dp);      
+      margin-bottom: 10px;            
+      min-width: 250px;                   
+    }
+
+    @media (max-width:960px) {
+      paper-button {
+        width: 100%;
+      }
     }
 
     paper-button[active] {
@@ -105,6 +113,10 @@ styleElement.innerHTML =
      font-size: 12pt;     
     }
 
+    a {
+      text-decoration: underline;
+    }
+
     /* __________________________________________________ tk-luokkahaku ___________________________________________________*/ 
 
     .tk-luokkahaku-body {
@@ -114,7 +126,6 @@ styleElement.innerHTML =
     .tk-luokkahaku-ul {
       position: absolute;
       @apply(--shadow-elevation-8dp);     
-      width: 46.75%;
       margin-top: 0px;
       max-height: 200px;
       overflow:auto;
@@ -122,10 +133,8 @@ styleElement.innerHTML =
     }
 
     .tk-luokkahaku-input {
-      display: inline-block;
       width: 100%;
       padding: 8px 16px;
-      display: inline-block;
       border: 1px solid #bcbcbc;
       border-radius: 2px;
       box-sizing: border-box;
@@ -166,9 +175,14 @@ styleElement.innerHTML =
       background-color: #0073b0;
     }
 
+    .tk-luokituspuu-header {
+      display: flex;
+      justify-content: space-between;
+    }
+
     .tk-luokituspuu-open {
       color: white;
-      float:right;
+      margin-right: 0.5em;
     }
 
     .tk-luokituspuu-open:hover {
@@ -176,13 +190,14 @@ styleElement.innerHTML =
     }
 
     .tk-luokituspuu-ul {
-      clear:both;        
+      margin-top: 0;
       @apply(--shadow-elevation-2dp);       
     }
 
     .tk-luokituspuu-li {
-      position: relative;
-      white-space: pre-wrap;
+      white-space: pre;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     // .tk-luokituspuu-li:hover .tooltiptext {

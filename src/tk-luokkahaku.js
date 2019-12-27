@@ -208,10 +208,10 @@ class TkLuokkahaku extends PolymerElement {
     }
   }
 
-  fetchData() {
+  async fetchData() {
     this.results = []
     let url = "https://data.stat.fi/api/classifications/v2/classifications/" + this.classification + "/classificationItems?content=data&meta=max&lang=" + this.language
-    fetch(url)
+    await fetch(url)
       .then((response) => {
         return response.json();
       })
@@ -230,7 +230,6 @@ class TkLuokkahaku extends PolymerElement {
 
   fetchCorrespondenceClasses() {
     let url = "https://data.stat.fi/api/classifications/v1/correspondenceTables/" + this.classification + "%23rakennus_1_20180712/maps?content=data&meta=max&lang=" + this.language
-    console.log("Haetaan vastinluokat osoitteesta: " + url)
     fetch(url)
       .then((response) => {
         return response.json();
