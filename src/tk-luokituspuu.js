@@ -84,34 +84,41 @@ class TkLuokituspuu extends PolymerElement {
   // Handles the opening and closing of the tree items.
   open(e) {
     let item = e.target
-    if (item.tagName.toLowerCase() !== "li") {    // To trigger opening also when user clicks the <span> elements inside <li>.
+    if (item.tagName.toLowerCase() !== "li") {  // To trigger opening also when user clicks the <span> elements inside <li>.
       item = e.target.parentNode
     }
+    let _class = ""
     this._itemSelected(item)
-    if (this.openAllText !== "Sulje kaikki" && this.openAllText !== "Close all" && this.openAllText !== "Stäng alla") {   // Only open if "open everything" is not selected.
+    if (this.openAllText !== "Sulje kaikki" && this.openAllText !== "Close all" && this.openAllText !== "Stäng alla") { // Only open if "open everything" is not selected.
       this.classes.forEach(function (value, index) {
         if (item.id === value.localId || item.id === value.name) {
+          _class = value
           for (let i = index; i < this.classes.length; i++) {
-            if (this.classes[i].parentItemLocalId === value.localId) {    // If a class has the same parent as current class...
-              if (this.classes[i].visible === false) {
-                this.classes[i].visible = true  // Open it.
-              } else {
-                this.classes[i].visible = false  // Close it.
-                for (let j = i; j < this.classes.length; j++) {
-                  if (this.classes[j].parentItemLocalId === this.classes[i].localId) {
-                    this.classes[j].visible = false
-                  }
-                  for (let k = i; k < this.classes.length; k++) {
-                    if (this.classes[k].parentItemLocalId === this.classes[j].localId) {
-                      this.classes[k].visible = false
-                    }
-                  }
-                }
-              }
+            if (this.classes[i].parentItemLocalId === value.localId) {  // If a class has the same parent ID as current class ID, hide/show.
+              this.classes[i].visible ? this.classes[i].visible = false : this.classes[i].visible = true
             }
           }
         }
       }.bind(this))
+      const visibleItems = this.classes.filter(c => c.visible === true)
+      let level = 0
+      for (let i = 0; i < visibleItems.length; i++) {
+        if (visibleItems[i].level > 1) {
+          if (visibleItems[i].level - visibleItems[i - 1].level > 1) {
+            level = visibleItems[i].level // Need to hide all classes with this level or more, if parent class is clicked.
+          }
+        }
+      }
+      let mainParent = ""
+      for (let i = this.classes.indexOf(_class); i < this.classes.length; i++) {
+        if (this.classes[i].level >= level && level > 1) {
+          this.classes[i].visible = false
+          mainParent = this.classes[i].mainParent
+        }
+        if (mainParent && this.classes[i+2].mainParent !== mainParent) {  // Brake the loop so that other main parent's child classes with level-variable are not hidden.
+          break
+        }
+      }
       this.render()
       this.renderListElements()
     }
@@ -268,11 +275,10 @@ class TkLuokituspuu extends PolymerElement {
   // Assigns data to new data fields to allow access in HTML-template. There was a problem in reaching indexes of the original data e.g. explanatoryNotes[0].
   renderData(json) {
     this.classificationName = json[0].classification.classificationName[0].name
-    let levelCalc = 0;
+    let levelCalc = 0
+    let level = 0
+    let mainParent
     for (let item of json) {
-      if (item.level > levelCalc) {
-        levelCalc = item.level
-      }
       item.localId = item.localId.replace("/", "-")
       if (item.parentItemLocalId) {
         item.parentItemLocalId = item.parentItemLocalId.replace("/", "-")
@@ -295,6 +301,12 @@ class TkLuokituspuu extends PolymerElement {
       } else if (item.level == 6) {
         item.visible = false
         item.intendation = "                    "
+      } else if (item.level == 7) {
+        item.visible = false
+        item.intendation = "                        "
+      } else if (item.level == 8) {
+        item.visible = false
+        item.intendation = "                            "
       }
       if (item.explanatoryNotes.length > 0) {
         const notes = item.explanatoryNotes[0]
@@ -310,6 +322,16 @@ class TkLuokituspuu extends PolymerElement {
         }
       } else {
         item.note = this.noNote
+      }
+      level = item.level
+      if (level > levelCalc) {
+        levelCalc = item.level
+      }
+      if (level === 1) {
+        mainParent = item
+        item.mainParent = item
+      } else {
+        item.mainParent = mainParent
       }
       this.push("classes", item)
     }
@@ -389,6 +411,7 @@ class TkLuokituspuu extends PolymerElement {
   }
 
   render() {
+
     this.shadowRoot.querySelector(".tk-luokituspuu-template").render()
   }
 }

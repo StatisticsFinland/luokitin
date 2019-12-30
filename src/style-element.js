@@ -127,7 +127,7 @@ styleElement.innerHTML =
       position: absolute;
       @apply(--shadow-elevation-8dp);     
       margin-top: 0px;
-      max-height: 200px;
+      max-height: 437.5px;
       overflow:auto;
       z-index: 2;
     }
