@@ -33,7 +33,7 @@ styleElement.innerHTML =
 
     @media (max-width:960px) {
       paper-button {
-        width: 100%;
+        width: 98%;
       }
     }
 
@@ -72,15 +72,6 @@ styleElement.innerHTML =
     .corresponding {
       font-weight: bold;
     }
-
-    .classificationButtons {
-      float: left;
-    }
-
-    .languageButtons {
-      float: right;
-    }
-
 
     .classCode {
     
@@ -129,7 +120,15 @@ styleElement.innerHTML =
       margin-top: 0px;
       max-height: 437.5px;
       overflow:auto;
-      z-index: 2;
+      width: 50%;
+      z-index: 1;
+    }
+
+    @media (max-width:960px) {
+      .tk-luokkahaku-ul {
+        width: 100%;
+        max-height: 250px;
+      }
     }
 
     .tk-luokkahaku-input {
@@ -295,7 +294,7 @@ styleElement.innerHTML =
       line-height: 1.1em;
     }
 
-    .keywordsHeader, .excludesHeader, .includesHeader, .includesAlsoHeader {
+    .keywordsHeader, .excludesHeader, .includesHeader, .includesAlsoHeader, .rulingsHeader, .changesHeader {
       font-weight:bold;
       font-size: 1em;
     }

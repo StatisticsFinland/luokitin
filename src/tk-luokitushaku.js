@@ -95,7 +95,6 @@ class TkLuokitushaku extends PolymerElement {
       let chooseButtons = this.shadowRoot.querySelectorAll(".btn")
       chooseButtons.forEach(button => {
         button.addEventListener('click', function () {
-          console.log(button.parentNode.id)
           window.dispatchEvent(new CustomEvent('tk-luokitushaku-luokitus', {
             detail: { localId: button.parentNode.id, name: button.parentNode.name }
           }))

@@ -1,4 +1,4 @@
-import { html, PolymerElement } from '@polymer/polymer/polymer-element.js';
+import {html, PolymerElement} from '@polymer/polymer/polymer-element.js';
 import '@polymer/paper-styles/paper-styles.js';
 import '@polymer/paper-styles/element-styles/paper-material-styles.js';
 import '@polymer/iron-list/iron-list.js';
@@ -18,10 +18,12 @@ class TkValinta extends PolymerElement {
             <h3 class="tk-valinta-h3"><span class="classCode tk-valinta-classCode">{{item.code}}</span> <span class="className tk-valinta-className">{{item.name}}</span></h3>
             <ul class="tk-valinta-ul">
               <li class="tk-valinta-li description tk-valinta-description">{{item.note}}</li> 
-              <li class="tk-valinta-li tk-valinta-excludes"><span class="excludesHeader">{{excludes}}</span><span class="tk-valinta-textContent tk-valinta-excludesContent">{{item.excludes}}</span></li>
               <li class="tk-valinta-li tk-valinta-includes"><span class="includesHeader">{{includes}}</span><span class="tk-valinta-textContent tk-valinta-includesContent">{{item.includes}}</span></li>
               <li class="tk-valinta-li tk-valinta-includesAlso"><span class="includesAlsoHeader">{{includesAlso}}</span><span class="tk-valinta-textContent tk-valinta-includesAlsoContent">{{item.includesAlso}}</span></li>
+              <li class="tk-valinta-li tk-valinta-rulings"><span class="rulingsHeader">{{rulings}}</span><span class="tk-valinta-textContent tk-valinta-rulingsContent">{{item.rulings}}</span></li>
+              <li class="tk-valinta-li tk-valinta-excludes"><span class="excludesHeader">{{excludes}}</span><span class="tk-valinta-textContent tk-valinta-excludesContent">{{item.excludes}}</span></li>
               <li class="tk-valinta-li tk-valinta-keywords"><span class="keywordsHeader">{{keywords}}</span><span class="tk-valinta-textContent tk-valinta-keywordsContent">{{item.keywords}}</span></li>
+              <li class="tk-valinta-li tk-valinta-changes"><span class="changesHeader">{{changes}}</span><span class="tk-valinta-textContent tk-valinta-changesContent">{{item.changes}}</span></li>
             </ul>
           </div>
         </template>
@@ -65,6 +67,16 @@ class TkValinta extends PolymerElement {
         value: "Hakusana: ",
         notify: true,
       },
+      rulings: {
+        type: String,
+        value: "Luokituspäätökset: ",
+        notify: true,
+      },
+      changes: {
+        type: String,
+        value: "Muutokset: ",
+        notify: true,
+      },
     }
   }
 
@@ -81,25 +93,25 @@ class TkValinta extends PolymerElement {
       this.includes = "Includes: "
       this.includesAlso = "Includes also: "
       this.excludes = "Excludes: "
+      this.rulings = "Classification declarations: "
+      this.changes = "Changes: "
     } else if (this.language === "sv") {
       this.header = "Valda klassen"
       this.keywords = "Nyckelord: "
       this.includes = "Innehåller: "
       this.includesAlso = "Innehåller också "
       this.excludes = "Innehåller inte: "
+      this.rulings = "Klassificering förordningar: "
+      this.changes = "Ändringar: "
     } else {
       this.header = "Valittu luokka"
       this.keywords = "Hakusana: "
       this.includes = "Tähän kuuluu: "
       this.includesAlso = "Tähän kuuluu myös: "
       this.excludes = "Tähän ei kuulu: "
+      this.rulings = "Luokituspäätökset: "
+      this.changes = "Muutokset: "
     }
-    // These might be redundant commands to notify Polymer of changes.
-    this.notifyPath('header')
-    this.notifyPath('keywords')
-    this.notifyPath('includes')
-    this.notifyPath('includesAlso')
-    this.notifyPath('excludes')
   }
 
   addEventListeners() {
@@ -121,11 +133,21 @@ class TkValinta extends PolymerElement {
       this.shadowRoot.querySelector(".tk-valinta-body").style.visibility = "hidden"
     } else if (e.detail.targetItems == null) {    // If the class does not have "targetItems" field, this means it is not a correspondence class. Therefore, only one class can be selected and shown.
       this.push("classes", e.detail)
+      this.header = e.detail.code + " " + e.detail.name
+      if (this.shadowRoot.querySelector('.tk-valinta-h3')) {
+        this.shadowRoot.querySelector('.tk-valinta-h3').setAttribute('hidden', true)
+        this.shadowRoot.querySelector('.tk-valinta-description').setAttribute('style', 'margin-top: 10px;')
+      }
     } else {
+      if (this.shadowRoot.querySelector('.tk-valinta-h3')) {
+        this.shadowRoot.querySelector('.tk-valinta-h3').removeAttribute('hidden')
+        this.shadowRoot.querySelector('.tk-valinta-description').setAttribute('style', 'margin-top: 0')
+      }
       this.classes = e.detail.targetItems
       this.setHeaderLanguage()
     }
   }
+
 
   // If there are correspondence classes, change the header to indicate that the shown class is from different classification than is visible in Tk-luokituspuu at the moment.
   setHeaderLanguage() {

@@ -1,4 +1,4 @@
-import { html, PolymerElement } from '@polymer/polymer/polymer-element.js';
+import {html, PolymerElement} from '@polymer/polymer/polymer-element.js';
 import '@polymer/iron-input/iron-input.js'
 import '@polymer/polymer/lib/elements/dom-repeat.js'
 import '../node_modules/whatwg-fetch/fetch.js'
@@ -8,23 +8,6 @@ import '@polymer/paper-input/paper-input.js';
 import './style-element.js';
 
 class TkLuokkahaku extends PolymerElement {
-
-  static get template() {
-    return html`
-    <style include="style-element">
-    </style>
-    <div class="tk tk-luokkahaku-body">
-      <iron-input class="tk-luokkahaku-iron-input" bind-value="{{resultSearchField}}">
-        <input class="tk-luokkahaku-input" id="resultSearch" type="search" is="iron-input" placeholder={{placeHolderText}}>
-      </iron-input>
-      <ul class="tk-luokkahaku-ul" id="mainList" hidden>
-        <template class="tk-luokkahaku-template" is="dom-repeat" items="{{results}}" filter="isVisible" observe="visible item.visible">
-          <li class="tk-luokkahaku-li" title="{{item.note}}" on-click="_itemSelected" id="{{item.localId}}" name="{{item.name}}"><span class="classCode tk-luokkahaku-classCode">{{item.code}}</span> <span class="className tk-luokkahaku-className">{{item.name}}</span></li>
-        </template>
-      </ul>
-    </div>
-    `;
-  }
 
   static get properties() {
     return {
@@ -53,7 +36,7 @@ class TkLuokkahaku extends PolymerElement {
       placeHolderText: {
         type: String,
         notify: true,
-        value: "Hae luokkaa sanahaulla tai koodilla...",
+        value: "Hae luokkaa sanahaulla tai koodilla",
       },
     }
   }
@@ -154,7 +137,7 @@ class TkLuokkahaku extends PolymerElement {
     if (inputLength > 2) {
       for (let item of this.results) {
         item.visible = true
-        if (item.name.toLowerCase().indexOf(input) == -1 && item.code.toLowerCase().slice(0, inputLength) !== input && !this.findKeyword(item.keywords, input) && !this.hasIncludes(item, input) && !this.hasIncludesAlso(item, input)) {
+        if (item.name.toLowerCase().indexOf(input) === -1 && item.code.toLowerCase().slice(0, inputLength) !== input && !this.findKeyword(item, input) && !this.hasIncludes(item, input) && !this.hasIncludesAlso(item, input)) {
           item.visible = false
         }
       }
@@ -182,7 +165,7 @@ class TkLuokkahaku extends PolymerElement {
 
   hasIncludesAlso(item, input) {
     if (item.includesAlso) {
-      for (let i = 0; i < item.includes.length; i++) {
+      for (let i = 0; i < item.includesAlso.length; i++) {
         if (item.includesAlso[i].indexOf(input) >= 0) {
           return true;
         }
@@ -190,9 +173,17 @@ class TkLuokkahaku extends PolymerElement {
     }
   }
 
-  findKeyword(keywords, input) {
-    for (let i = 0; i < keywords.length; i++) {
-      if (keywords[i].indexOf(input) >= 0) {
+  findKeyword(item, input) {
+    let keywords = item.keywords
+    if (item.targetItems) {
+      for (const targetItem of item.targetItems) {
+        keywords = keywords.concat(targetItem.keywords)
+      }
+    }
+    const uniqueKeywords = [...new Set(keywords)]
+    item.keywords = uniqueKeywords
+    for (let i = 0; i < item.keywords.length; i++) {
+      if (item.keywords[i].indexOf(input) >= 0) {
         return true;
       }
     }
@@ -230,6 +221,7 @@ class TkLuokkahaku extends PolymerElement {
 
   fetchCorrespondenceClasses() {
     let url = "https://data.stat.fi/api/classifications/v1/correspondenceTables/" + this.classification + "%23rakennus_1_20180712/maps?content=data&meta=max&lang=" + this.language
+    console.log(url)
     fetch(url)
       .then((response) => {
         return response.json();
@@ -248,6 +240,10 @@ class TkLuokkahaku extends PolymerElement {
       json.forEach(_class => {
         if (item.localId === _class.sourceItem.localId) {
           item.targetItems.push(_class.targetItem)
+          // for (const targetItem of item.targetItems) {  // Add keywords to correspondence class.
+          //   item.keywords = item.keywords.concat(targetItem.keywords)
+          // }
+          // console.log(item.keywords)
           this.push("correspondingClasses", item)
         }
       })
@@ -266,15 +262,21 @@ class TkLuokkahaku extends PolymerElement {
       item.targetItem.name = item.targetItem.classificationItemNames[0].name
       item.targetItem.keywords = item.targetItem.classificationIndexEntry[0].text
       if (item.targetItem.explanatoryNotes.length > 0) {
-        item.targetItem.note = item.targetItem.explanatoryNotes[0].generalNote[item.targetItem.explanatoryNotes[0].generalNote.length-1]
-        if (item.targetItem.explanatoryNotes[0].excludes) {
-          item.targetItem.excludes = item.targetItem.explanatoryNotes[0].excludes[item.targetItem.explanatoryNotes[0].excludes.length-1]
-        }
+        item.targetItem.note = item.targetItem.explanatoryNotes[0].generalNote[item.targetItem.explanatoryNotes[0].generalNote.length - 1]
         if (item.targetItem.explanatoryNotes[0].includes) {
-          item.targetItem.includes = item.targetItem.explanatoryNotes[0].includes[item.targetItem.explanatoryNotes[0].includes.length-1]
+          item.targetItem.includes = item.targetItem.explanatoryNotes[0].includes[item.targetItem.explanatoryNotes[0].includes.length - 1]
         }
         if (item.targetItem.explanatoryNotes[0].includesAlso) {
-          item.targetItem.includesAlso = item.targetItem.explanatoryNotes[0].includesAlso[item.targetItem.explanatoryNotes[0].includesAlso.length-1]
+          item.targetItem.includesAlso = item.targetItem.explanatoryNotes[0].includesAlso[item.targetItem.explanatoryNotes[0].includesAlso.length - 1]
+        }
+        if (item.targetItem.explanatoryNotes[0].excludes) {
+          item.targetItem.excludes = item.targetItem.explanatoryNotes[0].excludes[item.targetItem.explanatoryNotes[0].excludes.length - 1]
+        }
+        if (item.targetItem.explanatoryNotes[0].rulings) {
+          item.targetItem.rulings = item.targetItem.explanatoryNotes[0].rulings[item.targetItem.explanatoryNotes[0].rulings.length - 1]
+        }
+        if (item.targetItem.explanatoryNotes[0].changes) {
+          item.targetItem.changes = item.targetItem.explanatoryNotes[0].changes[item.targetItem.explanatoryNotes[0].changes.length - 1]
         }
       } else {
         item.note = ""
@@ -298,15 +300,21 @@ class TkLuokkahaku extends PolymerElement {
       item.name = item.classificationItemNames[0].name
       item.keywords = item.classificationIndexEntry[0].text
       if (item.explanatoryNotes.length > 0) {
-        item.note = item.explanatoryNotes[0].generalNote[item.explanatoryNotes[0].generalNote.length-1] // Gets the updated note from index [1] if it exists, otherwise gets the original note from index [0]
-        if (item.explanatoryNotes[0].excludes) {
-          item.excludes = item.explanatoryNotes[0].excludes[item.explanatoryNotes[0].excludes.length-1]
-        }
+        item.note = item.explanatoryNotes[0].generalNote[item.explanatoryNotes[0].generalNote.length - 1] // Gets the updated note from index [1] if it exists, otherwise gets the original note from index [0].
         if (item.explanatoryNotes[0].includes) {
-          item.includes = item.explanatoryNotes[0].includes[item.explanatoryNotes[0].includes.length-1]
+          item.includes = item.explanatoryNotes[0].includes[item.explanatoryNotes[0].includes.length - 1]
         }
         if (item.explanatoryNotes[0].includesAlso) {
-          item.includesAlso = item.explanatoryNotes[0].includesAlso[item.explanatoryNotes[0].includesAlso.length-1]
+          item.includesAlso = item.explanatoryNotes[0].includesAlso[item.explanatoryNotes[0].includesAlso.length - 1]
+        }
+        if (item.explanatoryNotes[0].excludes) {
+          item.excludes = item.explanatoryNotes[0].excludes[item.explanatoryNotes[0].excludes.length - 1]
+        }
+        if (item.explanatoryNotes[0].rulings) {
+          item.rulings = notes.rulings[notes.rulings.length - 1]
+        }
+        if (item.explanatoryNotes[0].changes) {
+          item.changes = notes.changes[notes.changes.length - 1]
         }
       } else {
         item.note = ""
@@ -318,6 +326,106 @@ class TkLuokkahaku extends PolymerElement {
   // Polyfills dont for some reason fix contains(), so we have to use old indexOf()
   hasClass(element, className) {
     return (' ' + element.className + ' ').indexOf(' ' + className + ' ') > -1;
+  }
+
+  static get template() {
+    return html`
+    <style>
+      .tk-luokituspuu-li {
+          padding-bottom: 2.5px;
+      }
+
+      .tk-luokituspuu-li:hover, .tk-luokkahaku-li:hover {
+        background-color: #e0effa;
+        cursor: pointer;      
+      }
+
+      ::placeholder {
+        font-size: 12pt;
+        font-style: italic;
+        color: grey;
+        opacity: 1; /* Firefox */
+      }
+  
+      :-ms-input-placeholder { /* Internet Explorer 10-11 */
+       color: grey;
+       font-style: italic;
+       font-size: 12pt;     
+      }
+  
+      ::-ms-input-placeholder { /* Microsoft Edge */
+       color: grey;
+       font-style: italic;
+       font-size: 12pt;     
+      }
+  
+      .tk-luokkahaku-body {
+        visibility: visible;      
+      }
+  
+      .tk-luokkahaku-ul {
+        padding-left:5px;    
+        background-color: white;     
+        list-style-type: none;  
+        position: absolute;
+        @apply(--shadow-elevation-8dp);     
+        margin-top: 0px;
+        max-height: 250px;
+        overflow:auto;
+        width: 50%;
+        z-index: 1;
+      }
+  
+      @media (max-width:960px) {
+        .tk-luokkahaku-ul {
+          width: 100%;
+          max-height: 250px;
+        }
+      }
+  
+      .tk-luokkahaku-input {
+        width: 100%;
+        padding: 8px 16px;
+        border: 1px solid #bcbcbc;
+        border-radius: 2px;
+        box-sizing: border-box;
+        font-size: 1.2em;
+        // background: url("suurennuslasi.png") no-repeat scroll 7px 7px; 
+        background-position: right;         
+        background-color: #f7f7f7;
+        @apply(--shadow-elevation-2dp);    
+      }
+  
+      .tk-luokkahaku-input::-webkit-search-cancel-button {
+        position:relative;
+        right:20px;    
+      }
+  
+      .tk-luokkahaku-input::-ms-clear{
+        margin-right:20px  
+      }
+  
+      .tk-luokkahaku-input:focus {
+        border: 0.25px solid #e0effa;
+        @apply(--shadow-elevation-4dp);              
+      }
+  
+      .tk-luokkahaku-iron-input {        /* When styling input, you may need to apply same styles to iron-input too. */
+        width: 100%;
+      }
+    </style>
+
+    <div class="tk tk-luokkahaku-body">
+      <iron-input class="tk-luokkahaku-iron-input" bind-value="{{resultSearchField}}">
+        <input class="tk-luokkahaku-input" id="resultSearch" type="search" is="iron-input" placeholder={{placeHolderText}}>
+      </iron-input>
+      <ul class="tk-luokkahaku-ul" id="mainList" hidden>
+        <template class="tk-luokkahaku-template" is="dom-repeat" items="{{results}}" filter="isVisible" observe="visible item.visible">
+          <li class="tk-luokkahaku-li" title="{{item.note}}" on-click="_itemSelected" id="{{item.localId}}" name="{{item.name}}"><span class="classCode tk-luokkahaku-classCode">{{item.code}}</span> <span class="className tk-luokkahaku-className">{{item.name}}</span></li>
+        </template>
+      </ul>
+    </div>
+    `;
   }
 
 }

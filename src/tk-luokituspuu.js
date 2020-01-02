@@ -128,7 +128,7 @@ class TkLuokituspuu extends PolymerElement {
   _itemSelected(targetItem) {
     let _selected = this.shadowRoot.querySelector(".tk-luokituspuu-template").itemForElement(targetItem)
     if (this.isCorrespondenceClasses) {
-      if (this.correspondingClasses.indexOf(_selected) != -1) {
+      if (this.correspondingClasses && this.correspondingClasses.indexOf(_selected) != -1) {
         window.dispatchEvent(new CustomEvent('tk-luokkahaku-luokka', {
           detail: _selected
         }))
@@ -308,17 +308,24 @@ class TkLuokituspuu extends PolymerElement {
         item.visible = false
         item.intendation = "                            "
       }
+
       if (item.explanatoryNotes.length > 0) {
         const notes = item.explanatoryNotes[0]
-        item.note = notes.generalNote[notes.generalNote.length - 1]
-        if (item.explanatoryNotes[0].excludes) {
-          item.excludes = notes.excludes[notes.excludes.length - 1]
-        }
+        item.note = notes.generalNote[notes.generalNote.length - 1] // Take the last index of array. It contains the latest information.
         if (item.explanatoryNotes[0].includes) {
           item.includes = notes.includes[notes.includes.length - 1]
         }
         if (item.explanatoryNotes[0].includesAlso) {
           item.includesAlso = notes.includesAlso[notes.includesAlso.length - 1]
+        }
+        if (item.explanatoryNotes[0].excludes) {
+          item.excludes = notes.excludes[notes.excludes.length - 1]
+        }
+        if (item.explanatoryNotes[0].rulings) {
+          item.rulings = notes.rulings[notes.rulings.length - 1]
+        }
+        if (item.explanatoryNotes[0].changes) {
+          item.changes = notes.changes[notes.changes.length - 1]
         }
       } else {
         item.note = this.noNote
@@ -395,14 +402,20 @@ class TkLuokituspuu extends PolymerElement {
       item.targetItem.keywords = item.targetItem.classificationIndexEntry[0].text
       if (item.targetItem.explanatoryNotes.length > 0) {
         item.targetItem.note = item.targetItem.explanatoryNotes[0].generalNote[item.targetItem.explanatoryNotes[0].generalNote.length - 1]
-        if (item.targetItem.explanatoryNotes[0].excludes) {
-          item.targetItem.excludes = item.targetItem.explanatoryNotes[0].excludes[item.targetItem.explanatoryNotes[0].excludes.length - 1]
-        }
         if (item.targetItem.explanatoryNotes[0].includes) {
           item.targetItem.includes = item.targetItem.explanatoryNotes[0].includes[item.targetItem.explanatoryNotes[0].includes.length - 1]
         }
         if (item.targetItem.explanatoryNotes[0].includesAlso) {
           item.targetItem.includesAlso = item.targetItem.explanatoryNotes[0].includesAlso[item.targetItem.explanatoryNotes[0].includesAlso.length - 1]
+        }
+        if (item.targetItem.explanatoryNotes[0].excludes) {
+          item.targetItem.excludes = item.targetItem.explanatoryNotes[0].excludes[item.targetItem.explanatoryNotes[0].excludes.length - 1]
+        }
+        if (item.targetItem.explanatoryNotes[0].rulings) {
+          item.targetItem.rulings = item.targetItem.explanatoryNotes[0].rulings[item.targetItem.explanatoryNotes[0].rulings.length - 1]
+        }
+        if (item.targetItem.explanatoryNotes[0].changes) {
+          item.targetItem.changes = item.targetItem.explanatoryNotes[0].changes[item.targetItem.explanatoryNotes[0].changes.length - 1]
         }
       } else {
         item.note = this.noNote
