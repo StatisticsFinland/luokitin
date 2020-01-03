@@ -5,7 +5,6 @@ import '../node_modules/whatwg-fetch/fetch.js'
 import '@polymer/paper-styles/paper-styles.js';
 import '@polymer/paper-styles/element-styles/paper-material-styles.js';
 import '@polymer/paper-input/paper-input.js';
-import './style-element.js';
 
 class TkLuokkahaku extends PolymerElement {
 
@@ -331,15 +330,6 @@ class TkLuokkahaku extends PolymerElement {
   static get template() {
     return html`
     <style>
-      .tk-luokituspuu-li {
-          padding-bottom: 2.5px;
-      }
-
-      .tk-luokituspuu-li:hover, .tk-luokkahaku-li:hover {
-        background-color: #e0effa;
-        cursor: pointer;      
-      }
-
       ::placeholder {
         font-size: 12pt;
         font-style: italic;
@@ -381,6 +371,11 @@ class TkLuokkahaku extends PolymerElement {
           width: 100%;
           max-height: 250px;
         }
+      }
+
+      .tk-luokkahaku-li:hover {
+        background-color: #e0effa;
+        cursor: pointer;      
       }
   
       .tk-luokkahaku-input {

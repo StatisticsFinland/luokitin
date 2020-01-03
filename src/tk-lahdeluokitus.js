@@ -1,23 +1,8 @@
-import { html, PolymerElement } from '@polymer/polymer/polymer-element.js';
+import {html, PolymerElement} from '@polymer/polymer/polymer-element.js';
 import '@polymer/paper-button/paper-button.js';
 import '@polymer/paper-styles/paper-styles.js';
-import './style-element.js';
 
 class TkLahdeluokitus extends PolymerElement {
-
-    static get template() {
-        return html`
-            <style include="style-element">        
-            </style>
-            <div class="tk-lahdeluokitus-body">
-                <div class="classificationButtons">
-                    <paper-button toggles active raised on-click="click" id="rakennus_1_20180712">{{buttonContent.first}}</paper-button>
-                    <paper-button toggles raised on-click="click" id="rakennus_1_19940101">{{buttonContent.second}}</paper-button>
-                    <paper-button toggles raised on-click="click" id="toimiala_1_20080101">{{buttonContent.third}}</paper-button>
-                </div>  
-            </div>
-        `;
-    }
 
     static get properties() {
         return {
@@ -31,7 +16,7 @@ class TkLahdeluokitus extends PolymerElement {
             buttonContent: {
                 type: Array,
                 notify: true,
-                value: { first: "Rakennusluokitus 2018", second: "Rakennusluokitusavain", third: "Toimialaluokitusavain" }
+                value: {first: "Rakennusluokitus 2018", second: "Rakennusluokitusavain", third: "Toimialaluokitusavain"}
             },
         }
     }
@@ -62,7 +47,7 @@ class TkLahdeluokitus extends PolymerElement {
             correspondenceClasses = true;
         }
         window.dispatchEvent(new CustomEvent('tk-luokitushaku-luokitus', {
-            detail: { classificationId: e.target.id, correspondenceClasses: correspondenceClasses }
+            detail: {classificationId: e.target.id, correspondenceClasses: correspondenceClasses}
         }))
         let buttons = this.shadowRoot.querySelectorAll("paper-button")
         buttons.forEach(button => {
@@ -77,6 +62,55 @@ class TkLahdeluokitus extends PolymerElement {
         if (obj.hasAttribute(attr)) {
             obj.removeAttribute(attr)
         }
+    }
+
+    static get template() {
+        return html`
+            <style>
+                paper-button {
+                    background-color: #ececec;                    
+                    color: black;                                
+                    font-size: 0.9em;
+                    @apply(--shadow-elevation-2dp);      
+                    margin-bottom: 10px;            
+                    min-width: 250px;                   
+                }
+          
+                @media (max-width:960px) {
+                    paper-button {
+                        width: 98%;
+                    }
+                }
+          
+                paper-button[active] {
+                    background-color: #0073B0;
+                    color: white;
+                    @apply(--shadow-elevation-4dp);                                              
+                }
+          
+                paper-button:hover {
+                    background-color: #e0effa;
+                    color: black;      
+                    @apply(--shadow-elevation-4dp);                                                          
+                }
+          
+                paper-button.disabled {
+                    color: white;
+                    background-color: bisque;
+                }
+              
+                .tk-lahdeluokitus-body {
+                    visibility: visible;      
+                }       
+            </style>
+            <div class="tk-lahdeluokitus-body">
+                <div class="classificationButtons">
+                    <paper-button toggles active raised on-click="click" id="rakennus_1_20180712">{{buttonContent.first}}</paper-button>
+                    <paper-button toggles raised on-click="click" id="rakennus_1_19940101">{{buttonContent.second}}</paper-button>
+                    <paper-button toggles raised on-click="click" id="toimiala_1_20080101">{{buttonContent.third}}</paper-button>
+                </div>  
+            </div>
+        `;
     }
 }
 

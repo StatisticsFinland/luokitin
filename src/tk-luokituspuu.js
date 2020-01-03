@@ -4,26 +4,8 @@ import '@polymer/polymer/lib/elements/dom-repeat.js'
 import '../node_modules/whatwg-fetch/fetch.js'
 import '@polymer/paper-styles/paper-styles.js';
 import '@polymer/paper-styles/element-styles/paper-material-styles.js';
-import './style-element.js';
 
 class TkLuokituspuu extends PolymerElement {
-
-  static get template() {
-    return html`
-      <style include="style-element">
-      </style>
-      <div class="tk tk-luokituspuu-body">
-        <div class="tk-luokituspuu-header">
-          <h1 class="tk-luokituspuu-h1">{{classificationName}}</h1> <a on-click="handleOpen" class="tk-luokituspuu-open">{{openAllText}}</a>
-        </div>
-        <ul class="tk-luokituspuu-ul">
-            <template class="tk-luokituspuu-template" is="dom-repeat" items="{{classes}}" filter="isVisible" observe="visible item.visible">
-              <li class="tk-luokituspuu-li" on-click="open" id="{{item.localId}}" title="{{item.name}}"><span class="intendation tk-luokituspuu-intendation">{{item.intendation}}</span><span class="classCode tk-luokituspuu-classCode">{{item.code}}</span>      <span class="className tk-luokituspuu-className">{{item.name}}</span></li>
-            </template>
-        </ul>
-      </div>
-      `;
-  }
 
   static get properties() {
     return {
@@ -115,7 +97,7 @@ class TkLuokituspuu extends PolymerElement {
           this.classes[i].visible = false
           mainParent = this.classes[i].mainParent
         }
-        if (mainParent && this.classes[i+2].mainParent !== mainParent) {  // Brake the loop so that other main parent's child classes with level-variable are not hidden.
+        if (mainParent && this.classes[i + 2].mainParent !== mainParent) {  // Brake the loop so that other main parent's child classes with level-variable are not hidden.
           break
         }
       }
@@ -423,8 +405,88 @@ class TkLuokituspuu extends PolymerElement {
     }
   }
 
-  render() {
+  static get template() {
+    return html`
+      <style>
+      .selected {
+        background-color: #e0effa;
+        font-weight: bold;
+      }
 
+      .corresponding {
+        font-weight: bold;
+      }
+  
+      a {
+        text-decoration: underline;
+      }
+
+      .tk-luokituspuu-body {
+        visibility: visible;
+        @apply(--shadow-elevation-2dp);
+        background-color: #0073b0;
+      }
+  
+      .tk-luokituspuu-header {
+        display: flex;
+        justify-content: space-between;
+      }
+  
+      .tk-luokituspuu-open {
+        color: white;
+        margin-right: 0.5em;
+      }
+  
+      .tk-luokituspuu-open:hover {
+        cursor: pointer;      
+      }
+  
+      .tk-luokituspuu-ul {
+        padding-left:5px;    
+        background-color: white;     
+        list-style-type: none; 
+        margin-top: 0;
+        @apply(--shadow-elevation-2dp);       
+      }
+  
+      .tk-luokituspuu-li {
+        white-space: pre;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        padding-bottom: 2.5px;
+      }
+
+      .tk-luokituspuu-li:hover {
+        background-color: #e0effa;
+        cursor: pointer;      
+      }
+  
+      .tk-luokituspuu-h1 {
+        color: white;      
+        @apply --paper-font-headline;
+        padding-left: 20px;      
+        font-weight: bold; 
+        padding-top: 12px;   
+        padding-bottom: 12px;
+        margin: 0;
+        float: left;           
+      }
+      </style>
+
+      <div class="tk tk-luokituspuu-body">
+        <div class="tk-luokituspuu-header">
+          <h1 class="tk-luokituspuu-h1">{{classificationName}}</h1> <a on-click="handleOpen" class="tk-luokituspuu-open">{{openAllText}}</a>
+        </div>
+        <ul class="tk-luokituspuu-ul">
+            <template class="tk-luokituspuu-template" is="dom-repeat" items="{{classes}}" filter="isVisible" observe="visible item.visible">
+              <li class="tk-luokituspuu-li" on-click="open" id="{{item.localId}}" title="{{item.name}}"><span class="intendation tk-luokituspuu-intendation">{{item.intendation}}</span><span class="classCode tk-luokituspuu-classCode">{{item.code}}</span>      <span class="className tk-luokituspuu-className">{{item.name}}</span></li>
+            </template>
+        </ul>
+      </div>
+      `;
+  }
+
+  render() {
     this.shadowRoot.querySelector(".tk-luokituspuu-template").render()
   }
 }
