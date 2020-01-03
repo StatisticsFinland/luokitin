@@ -157,13 +157,13 @@ class TkValinta extends PolymerElement {
     return html`
       <style>   
       .tk-valinta-body {   
-        @apply(--shadow-elevation-2dp);                                              
+        @apply --shadow-elevation-2dp;                                              
         visibility: hidden;
         background-color: #0073b0; 
       }
   
       .tk-valinta-iron-list {
-        @apply(--shadow-elevation-2dp); 
+        @apply --shadow-elevation-2dp; 
         background-color: white;
         padding-left: 20px;   
         max-height:360px;                    

@@ -71,7 +71,7 @@ class TkLahdeluokitus extends PolymerElement {
                     background-color: #ececec;                    
                     color: black;                                
                     font-size: 0.9em;
-                    @apply(--shadow-elevation-2dp);      
+                    @apply --shadow-elevation-2dp;      
                     margin-bottom: 10px;            
                     min-width: 250px;                   
                 }
@@ -85,13 +85,13 @@ class TkLahdeluokitus extends PolymerElement {
                 paper-button[active] {
                     background-color: #0073B0;
                     color: white;
-                    @apply(--shadow-elevation-4dp);                                              
+                    @apply --shadow-elevation-4dp;                                              
                 }
           
                 paper-button:hover {
                     background-color: #e0effa;
                     color: black;      
-                    @apply(--shadow-elevation-4dp);                                                          
+                    @apply --shadow-elevation-4dp;                                                          
                 }
           
                 paper-button.disabled {

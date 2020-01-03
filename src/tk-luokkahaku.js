@@ -358,7 +358,7 @@ class TkLuokkahaku extends PolymerElement {
         background-color: white;     
         list-style-type: none;  
         position: absolute;
-        @apply(--shadow-elevation-8dp);     
+        @apply --shadow-elevation-8dp;     
         margin-top: 0px;
         max-height: 250px;
         overflow:auto;
@@ -388,7 +388,7 @@ class TkLuokkahaku extends PolymerElement {
         // background: url("suurennuslasi.png") no-repeat scroll 7px 7px; 
         background-position: right;         
         background-color: #f7f7f7;
-        @apply(--shadow-elevation-2dp);    
+        @apply --shadow-elevation-2dp;    
       }
   
       .tk-luokkahaku-input::-webkit-search-cancel-button {
@@ -402,7 +402,7 @@ class TkLuokkahaku extends PolymerElement {
   
       .tk-luokkahaku-input:focus {
         border: 0.25px solid #e0effa;
-        @apply(--shadow-elevation-4dp);              
+        @apply --shadow-elevation-4dp;              
       }
   
       .tk-luokkahaku-iron-input {        /* When styling input, you may need to apply same styles to iron-input too. */

@@ -423,7 +423,7 @@ class TkLuokituspuu extends PolymerElement {
 
       .tk-luokituspuu-body {
         visibility: visible;
-        @apply(--shadow-elevation-2dp);
+        @apply --shadow-elevation-2dp;
         background-color: #0073b0;
       }
   
@@ -446,7 +446,7 @@ class TkLuokituspuu extends PolymerElement {
         background-color: white;     
         list-style-type: none; 
         margin-top: 0;
-        @apply(--shadow-elevation-2dp);       
+        @apply --shadow-elevation-2dp;       
       }
   
       .tk-luokituspuu-li {
