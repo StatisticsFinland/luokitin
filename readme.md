@@ -21,7 +21,7 @@ Avaa selaimessa http://127.0.0.1:8081/.
 ### Tuotantoon
 ```polymer build```
 
-Katso Polymerin tarkemmat [ohjeet](https://polymer-library.polymer-project.org/3.0/docs/apps/build-for-production).
+Tarkemmat [ohjeet](https://polymer-library.polymer-project.org/3.0/docs/apps/build-for-production).
 
 ### Komponentit
 
