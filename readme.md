@@ -53,7 +53,7 @@ tai käytettävän luokituksen esim:
 ```
 
 ### Tapahtumakuuntelijat
-Komponentit kommunikoivat keskenään tapahtumilla (events). Esimerkiksi yksittäisen luokan klikkaaminen triggeröi stat-class tapahtuman, joka välittää klikatun luokan tiedot tapahtumaa kuuntelevalle koodille. Täten luokan voi vastaanottaa myös muualla, kuin tämän projektin koodissa. Tällä hetkellä komponentit lähettävät tai kuuntelevat näitä tapahtumia:
+Komponentit kommunikoivat keskenään tapahtumilla (events). Esimerkiksi yksittäisen luokan klikkaaminen synnyttää stat-class tapahtuman, joka välittää klikatun luokan tiedot tapahtumaa kuuntelevalle koodille. Täten luokan voi vastaanottaa myös muualla, kuin tämän projektin koodissa. Tällä hetkellä komponentit lähettävät tai kuuntelevat näitä tapahtumia:
 ```sh
 stat-classification
 stat-class
