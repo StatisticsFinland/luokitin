@@ -1,17 +1,17 @@
 <!DOCTYPE html>
 <html>
 <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
-<title>luokitin</title>
-<meta name="description" content="Luokitin application">
+<title>Luokitin</title>
+<meta name="description" content="Classification browser">
 <link rel="manifest" href="/manifest.json">
 <!-- For browser compatibility  -->
 <script src="/node_modules/@webcomponents/webcomponentsjs/custom-elements-es5-adapter.js"></script>
 <script src="/node_modules/@webcomponents/webcomponentsjs/webcomponents-bundle.js"></script>
 
-<script type="module" src="/src/tk-luokkahaku.js"></script>
-<script type="module" src="/src/tk-luokituspuu.js"></script>
-<script type="module" src="/src/tk-valinta.js"></script>
-<script type="module" src="/src/tk-lahdeluokitus.js"></script>
+<script type="module" src="/src/stat-search.js"></script>
+<script type="module" src="/src/stat-tree.js"></script>
+<script type="module" src="/src/stat-result.js"></script>
+<script type="module" src="/src/stat-buttons.js"></script>
 
 <style>
 	.all {
@@ -52,7 +52,7 @@
 		margin-top: 61px;
 	}
 
-	.lahdeluokitus {
+	.buttons {
 		display: flex;
 		margin-bottom: 25px;
 	}
@@ -70,7 +70,7 @@
 			margin-left: 0;
 		}
 
-		.lahdeluokitus {
+		.buttons {
 			flex-direction: column;
 		}
 
@@ -90,22 +90,22 @@
 
 <body>
 
-	<div class="all lahdeluokitus">
-		<tk-lahdeluokitus language="fi" classification="rakennus_1_20180712"></tk-lahdeluokitus>
+	<div class="all buttons">
+		<stat-buttons language="fi" classification="rakennus_1_20180712"></stat-buttons>
 	</div>
 
 	<div class="flex-wrapper">
 		<div class="flex-tree">
 			<div class="all search">
-				<tk-luokkahaku language="fi" classification="rakennus_1_20180712"></tk-luokkahaku>
+				<stat-search language="fi" classification="rakennus_1_20180712"></stat-search>
 			</div>
 			<div class="all tree">
-				<tk-luokituspuu language="fi" classification="rakennus_1_20180712"></tk-luokituspuu>
+				<stat-tree language="fi" classification="rakennus_1_20180712"></stat-tree>
 			</div>
 		</div>
 		<div class="flex-result">
 			<div class="all selected">
-				<tk-valinta language="fi"></tk-valinta>
+				<stat-result language="fi"></stat-result>
 			</div>
 		</div>
 	</div>

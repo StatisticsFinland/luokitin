@@ -1,12 +1,12 @@
 import {html, PolymerElement} from '@polymer/polymer/polymer-element.js';
 import '@polymer/iron-input/iron-input.js'
 import '@polymer/polymer/lib/elements/dom-repeat.js'
-import '../node_modules/whatwg-fetch/fetch.js'
+import 'whatwg-fetch/fetch'
 import '@polymer/paper-styles/paper-styles.js';
 import '@polymer/paper-styles/element-styles/paper-material-styles.js';
 import '@polymer/paper-input/paper-input.js';
 
-class TkLuokkahaku extends PolymerElement {
+class StatSearch extends PolymerElement {
 
   static get properties() {
     return {
@@ -425,4 +425,4 @@ class TkLuokkahaku extends PolymerElement {
 
 }
 
-window.customElements.define('tk-luokkahaku', TkLuokkahaku);
+window.customElements.define('stat-search', StatSearch);
