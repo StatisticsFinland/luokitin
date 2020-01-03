@@ -23,8 +23,6 @@ Avaa selaimessa http://127.0.0.1:8081/.
 
 Katso Polymerin tarkemmat [ohjeet](https://polymer-library.polymer-project.org/3.0/docs/apps/build-for-production).
 
-HUOM! Buildaus on tuottanut ongelmia ja saattaa vaatia debugaamista, eikä välttämättä ole näin yksinkertaista. Jos projekti saadaan jatkokehitykseen, pyritään mm. tämä korjaamaan poistamalla Polymer-kirjasto ja refaktoroimalla komponentit ilman mitään kirjastoa.
-
 ### Komponentit
 
 **tk-luokkahaku**
@@ -67,4 +65,6 @@ tk-luokkahaku-luokka
 ```
 
 ### Selainyhteensopivuus
-Web-komponentit ovat melko tuore teknologia ja kaikki selaimet eivät tue niitä sellaisenaan. Tätä varten tarvitaan *polyfillejä*, kuten [Webcomponents.js](https://github.com/WebComponents/webcomponentsjs) -polyfillkokoelmaa. Myös Polymer [ohjeistaa](https://polymer-library.polymer-project.org/3.0/docs/polyfills) asiasta.
+Web-komponentit ovat melko tuore teknologia ja kaikki selaimet eivät tue niitä sellaisenaan. Tätä varten tarvitaan *polyfillejä*, kuten [Webcomponents.js](https://github.com/WebComponents/webcomponentsjs) -polyfillkokoelmaa. Myös Polymer [ohjeistaa](https://polymer-library.polymer-project.org/3.0/docs/polyfills) asiasta. Esimerkki niiden käytöstä löytyy index.html-tiedostosta.
+
+Luokittimen komponentit toimivat käytetyimpien selainten tuoreilla versioilla. Internet Explorer-toimivuus ei ole taattua.
