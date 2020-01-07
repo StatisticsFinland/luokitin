@@ -1,0 +1,133 @@
+<<<<<<< HEAD:readme.md
+# Luokitin
+
+Luokitin on luokitusten ja luokkien hakemiseen, selaamiseen ja valitsemiseen tarkoitettu komponenttiperhe. Luokitin koostuu useasta erillisestä keskenään kommunikoivasta [web-komponentista](https://www.webcomponents.org/introduction). Komponentit on toteutettu [Polymer](https://polymer-library.polymer-project.org/3.0/docs/devguide/feature-overview) web-komponenttikirjastolla.
+
+##### Luokittimen esimerkkitoteutuksia:
+**[Rakennusluokitin](https://www.stat.fi/rakennusluokitin)**
+**[Toimialaluokitin](http://pxnet2.stat.fi/fi/luokitukset/toimialaluokitin.html)** 
+
+### Kehitys
+
+Lataa luokitin.
+
+Asenna [Polymer](https://polymer-library.polymer-project.org/3.0/docs/install-3-0) esim. ```npm install -g polymer-cli```.
+
+Asenna luokittimen paketit esim. ```npm install```.
+
+Aja ```polymer serve```.
+
+Avaa selaimessa http://127.0.0.1:8081/.
+
+### Tuotantoon
+```polymer build```
+
+Katso Polymerin tarkemmat [ohjeet](https://polymer-library.polymer-project.org/3.0/docs/apps/build-for-production).
+
+### Komponentit
+
+**stat-search**
+
+Hakukenttä luokituksen luokkien suodattamiseen.
+
+**stat-tree**
+
+Luokitus selattavana hierarkisena listana.
+
+**stat-result**
+
+Näyttää valitun luokan tiedot.
+
+**stat-buttons**
+
+Linkityksen aiempien ja nykyisten luokitusversioiden välillä.
+*Kehitetty vain Rakennusluokitinta varten.*
+
+### Komponenttien ominaisuudet
+ Voit määritellä komponenteille kielen (fi/en/sv):
+```sh
+<stat-search language="en"></stat-search>
+```
+tai käytettävän luokituksen:
+```sh
+<stat-tree classification="rakennus_1_20180712"></stat-tree>
+```
+
+### Tapahtumakuuntelijat
+Komponentit kommunikoivat keskenään tapahtumilla (events). Esimerkiksi yksittäisen luokan klikkaaminen triggeröi stat-class tapahtuman, joka välittää klikatun luokan tiedot tapahtumaa kuuntelevalle koodille. Täten luokan voi vastaanottaa myös muualla, kuin tämän projektin koodissa. Tällä hetkellä komponentit lähettävät tai kuuntelevat näitä tapahtumia:
+```sh
+stat-classification
+stat-class
+```
+
+### Selainyhteensopivuus
+Web-komponentit ovat melko tuore teknologia ja kaikki selaimet eivät tue niitä sellaisenaan. Tätä varten tarvitaan *polyfillejä*, kuten [Webcomponents.js](https://github.com/WebComponents/webcomponentsjs) -polyfillkokoelmaa. Myös Polymer [ohjeistaa](https://polymer-library.polymer-project.org/3.0/docs/polyfills) asiasta. Esimerkki niiden käytöstä löytyy index.html-tiedostosta.
+
+Luokittimen komponentit toimivat käytetyimpien selainten tuoreilla versioilla. Internet Explorer-toimivuus ei ole taattua.
+=======
+# Luokitin
+
+Luokitin on luokitusten ja luokkien hakemiseen, selaamiseen ja valitsemiseen tarkoitettu komponenttiperhe. Luokitin koostuu useasta erillisestä keskenään kommunikoivasta [web-komponentista](https://www.webcomponents.org/introduction). Komponentit on toteutettu [Polymer](https://polymer-library.polymer-project.org/3.0/docs/devguide/feature-overview) web-komponenttikirjastolla.
+
+##### Luokittimen esimerkkitoteutuksia:
+**[Rakennusluokitin](https://www.stat.fi/rakennusluokitin)**
+**[Toimialaluokitin](http://pxnet2.stat.fi/fi/luokitukset/toimialaluokitin.html)** 
+
+### Kehitys
+
+Lataa luokitin.
+
+Asenna [Polymer](https://polymer-library.polymer-project.org/3.0/docs/install-3-0) esim. ```npm install -g polymer-cli```.
+
+Asenna luokittimen paketit esim. ```npm install```.
+
+Aja ```polymer serve```.
+
+Avaa selaimessa http://127.0.0.1:8081/.
+
+### Tuotantoon
+```polymer build```
+
+Katso Polymerin tarkemmat [ohjeet](https://polymer-library.polymer-project.org/3.0/docs/apps/build-for-production).
+
+### Komponentit
+
+**stat-search**
+
+Hakukenttä luokituksen luokkien suodattamiseen.
+
+**stat-tree**
+
+Luokitus selattavana hierarkisena listana.
+
+**stat-result**
+
+Näyttää valitun luokan tiedot.
+
+**stat-buttons**
+
+Linkityksen aiempien ja nykyisten luokitusversioiden välillä.
+*Kehitetty vain Rakennusluokitinta varten.*
+
+### Komponenttien ominaisuudet
+ Voit määritellä komponenteille kielen (fi/en/sv):
+```sh
+<stat-search language="en"></stat-search>
+```
+tai käytettävän luokituksen:
+```sh
+<stat-tree classification="rakennus_1_20180712"></stat-tree>
+```
+
+### Tapahtumakuuntelijat
+Komponentit kommunikoivat keskenään tapahtumilla (events). Esimerkiksi yksittäisen luokan klikkaaminen triggeröi stat-class tapahtuman, joka välittää klikatun luokan tiedot tapahtumaa kuuntelevalle koodille. Täten luokan voi vastaanottaa myös muualla, kuin tämän projektin koodissa. Tällä hetkellä komponentit lähettävät tai kuuntelevat näitä tapahtumia:
+```sh
+stat-classification
+stat-class
+```
+
+### Selainyhteensopivuus
+Web-komponentit ovat melko tuore teknologia ja kaikki selaimet eivät tue niitä sellaisenaan. Tätä varten tarvitaan *polyfillejä*, kuten [Webcomponents.js](https://github.com/WebComponents/webcomponentsjs) -polyfillkokoelmaa. Myös Polymer [ohjeistaa](https://polymer-library.polymer-project.org/3.0/docs/polyfills) asiasta. Esimerkki niiden käytöstä löytyy index.html-tiedostosta.
+
+Luokittimen komponentit toimivat käytetyimpien selainten tuoreilla versioilla. Internet Explorer-toimivuus ei ole taattua.
+>>>>>>> 46516ceecb25637e7b14ebd669c868c13db53821:README.md
