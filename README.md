@@ -1,4 +1,3 @@
-<<<<<<< HEAD:readme.md
 # Luokitin
 
 Luokitin on luokitusten ja luokkien hakemiseen, selaamiseen ja valitsemiseen tarkoitettu komponenttiperhe. Luokitin koostuu useasta erillisestä keskenään kommunikoivasta [web-komponentista](https://www.webcomponents.org/introduction). Komponentit on toteutettu [Polymer](https://polymer-library.polymer-project.org/3.0/docs/devguide/feature-overview) web-komponenttikirjastolla.
@@ -130,4 +129,3 @@ stat-class
 Web-komponentit ovat melko tuore teknologia ja kaikki selaimet eivät tue niitä sellaisenaan. Tätä varten tarvitaan *polyfillejä*, kuten [Webcomponents.js](https://github.com/WebComponents/webcomponentsjs) -polyfillkokoelmaa. Myös Polymer [ohjeistaa](https://polymer-library.polymer-project.org/3.0/docs/polyfills) asiasta. Esimerkki niiden käytöstä löytyy index.html-tiedostosta.
 
 Luokittimen komponentit toimivat käytetyimpien selainten tuoreilla versioilla. Internet Explorer-toimivuus ei ole taattua.
->>>>>>> 46516ceecb25637e7b14ebd669c868c13db53821:README.md
