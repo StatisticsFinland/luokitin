@@ -46,7 +46,7 @@ class StatButtons extends PolymerElement {
         if (e.target.id != "rakennus_1_20180712") {
             correspondenceClasses = true;
         }
-        window.dispatchEvent(new CustomEvent('tk-luokitushaku-luokitus', {
+        window.dispatchEvent(new CustomEvent('stat-classification', {
             detail: {classificationId: e.target.id, correspondenceClasses: correspondenceClasses}
         }))
         let buttons = this.shadowRoot.querySelectorAll("paper-button")
@@ -99,11 +99,11 @@ class StatButtons extends PolymerElement {
                     background-color: bisque;
                 }
               
-                .tk-lahdeluokitus-body {
+                .stat-buttons-body {
                     visibility: visible;      
                 }       
             </style>
-            <div class="tk-lahdeluokitus-body">
+            <div class="stat-buttons-body">
                 <div class="classificationButtons">
                     <paper-button toggles active raised on-click="click" id="rakennus_1_20180712">{{buttonContent.first}}</paper-button>
                     <paper-button toggles raised on-click="click" id="rakennus_1_19940101">{{buttonContent.second}}</paper-button>

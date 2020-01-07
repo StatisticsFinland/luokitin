@@ -88,33 +88,33 @@ class StatResult extends PolymerElement {
   }
 
   addEventListeners() {
-    window.addEventListener('tk-luokkahaku-luokka', e => {
+    window.addEventListener('stat-class', e => {
       this.classes = []
-      this.shadowRoot.querySelector(".tk-valinta-body").style.visibility = "visible"
+      this.shadowRoot.querySelector(".stat-result-body").style.visibility = "visible"
       this.addClasses(e)
       this.handleKeywords()
       this.handleLiElements()
     })
-    window.addEventListener('tk-luokitushaku-luokitus', e => {
-      this.shadowRoot.querySelector(".tk-valinta-body").style.visibility = "hidden"
+    window.addEventListener('stat-classification', e => {
+      this.shadowRoot.querySelector(".stat-result-body").style.visibility = "hidden"
     })
   }
 
   // Adds classes received via event to "classes" array.
   addClasses(e) {
-    if (e.detail === "ei avain luokka") {   // Hide tk-valinta, if receives this specific command in event detail.
-      this.shadowRoot.querySelector(".tk-valinta-body").style.visibility = "hidden"
+    if (e.detail === "ei avain luokka") {   // Hide stat-result, if receives this specific command in event detail.
+      this.shadowRoot.querySelector(".stat-result-body").style.visibility = "hidden"
     } else if (e.detail.targetItems == null) {    // If the class does not have "targetItems" field, this means it is not a correspondence class. Therefore, only one class can be selected and shown.
       this.push("classes", e.detail)
       this.header = e.detail.code + " " + e.detail.name
-      if (this.shadowRoot.querySelector('.tk-valinta-h3')) {
-        this.shadowRoot.querySelector('.tk-valinta-h3').setAttribute('hidden', true)
-        this.shadowRoot.querySelector('.tk-valinta-description').setAttribute('style', 'margin-top: 10px;')
+      if (this.shadowRoot.querySelector('.stat-result-h3')) {
+        this.shadowRoot.querySelector('.stat-result-h3').setAttribute('hidden', true)
+        this.shadowRoot.querySelector('.stat-result-description').setAttribute('style', 'margin-top: 10px;')
       }
     } else {
-      if (this.shadowRoot.querySelector('.tk-valinta-h3')) {
-        this.shadowRoot.querySelector('.tk-valinta-h3').removeAttribute('hidden')
-        this.shadowRoot.querySelector('.tk-valinta-description').setAttribute('style', 'margin-top: 0')
+      if (this.shadowRoot.querySelector('.stat-result-h3')) {
+        this.shadowRoot.querySelector('.stat-result-h3').removeAttribute('hidden')
+        this.shadowRoot.querySelector('.stat-result-description').setAttribute('style', 'margin-top: 0')
       }
       this.classes = e.detail.targetItems
       this.setHeaderLanguage()
@@ -122,7 +122,7 @@ class StatResult extends PolymerElement {
   }
 
 
-  // If there are correspondence classes, change the header to indicate that the shown class is from different classification than is visible in Tk-luokituspuu at the moment.
+  // If there are correspondence classes, change the header to indicate that the shown class is from different classification than is visible in stat-tree at the moment.
   setHeaderLanguage() {
     this.header = "Rakennusluokitus 2018"
     if (this.language === "en") {
@@ -144,7 +144,7 @@ class StatResult extends PolymerElement {
 
   // Hide empty fields, such as "this includes", if there is no data.
   handleLiElements() {
-    let elements = this.shadowRoot.querySelectorAll(".tk-valinta-textContent")
+    let elements = this.shadowRoot.querySelectorAll(".stat-result-textContent")
     elements.forEach(element => {
       element.parentNode.style.display = "none";
       if (element.innerText !== "" && element.innerText !== "," && element.innerText !== " ,") {
@@ -156,20 +156,20 @@ class StatResult extends PolymerElement {
   static get template() {
     return html`
       <style>   
-      .tk-valinta-body {   
+      .stat-result-body {   
         @apply --shadow-elevation-2dp;                                              
         visibility: hidden;
         background-color: #0073b0; 
       }
   
-      .tk-valinta-iron-list {
+      .stat-result-iron-list {
         @apply --shadow-elevation-2dp; 
         background-color: white;
         padding-left: 20px;   
         max-height:360px;                    
       }
   
-      .tk-valinta-h1 {
+      .stat-result-h1 {
         color: white;      
         @apply --paper-font-headline;
         padding-left: 20px;      
@@ -179,13 +179,13 @@ class StatResult extends PolymerElement {
         margin: 0;
       }
   
-      .tk-valinta-li {
+      .stat-result-li {
         padding-bottom: 2.5px;
         padding: 5px;
         white-space: pre-wrap;
       }
   
-      .tk-valinta-ul {
+      .stat-result-ul {
         padding-top: 0px;
         margin-top: 0px;
         padding-left:5px;    
@@ -193,12 +193,12 @@ class StatResult extends PolymerElement {
         list-style-type: none;
       }
   
-      .tk-valinta-ul li:nth-child(n+2) {
+      .stat-result-ul li:nth-child(n+2) {
         font-size: 0.9em;
         line-height: 0.95em;
       }
   
-      .tk-valinta-description {
+      .stat-result-description {
         line-height: 1.1em;
       }
   
@@ -207,7 +207,7 @@ class StatResult extends PolymerElement {
         font-size: 1em;
       }
   
-      .tk-valinta-h3 {
+      .stat-result-h3 {
         font-size: 1em;
         margin: 0;
         padding-top: 10px;
@@ -215,20 +215,20 @@ class StatResult extends PolymerElement {
       }
       </style>
       
-      <div class="tk tk-valinta-body"> 
-        <h1 class="tk-valinta-h1"> {{header}} </h1>
-        <iron-list items="{{classes}}" class="tk-valinta-iron-list">
-        <template class="tk-valinta-template">
+      <div class="stat-result-body"> 
+        <h1 class="stat-result-h1"> {{header}} </h1>
+        <iron-list items="{{classes}}" class="stat-result-iron-list">
+        <template class="stat-result-template">
           <div>
-            <h3 class="tk-valinta-h3"><span class="classCode tk-valinta-classCode">{{item.code}}</span> <span class="className tk-valinta-className">{{item.name}}</span></h3>
-            <ul class="tk-valinta-ul">
-              <li class="tk-valinta-li description tk-valinta-description">{{item.note}}</li> 
-              <li class="tk-valinta-li tk-valinta-includes"><span class="includesHeader">{{includes}}</span><span class="tk-valinta-textContent tk-valinta-includesContent">{{item.includes}}</span></li>
-              <li class="tk-valinta-li tk-valinta-includesAlso"><span class="includesAlsoHeader">{{includesAlso}}</span><span class="tk-valinta-textContent tk-valinta-includesAlsoContent">{{item.includesAlso}}</span></li>
-              <li class="tk-valinta-li tk-valinta-rulings"><span class="rulingsHeader">{{rulings}}</span><span class="tk-valinta-textContent tk-valinta-rulingsContent">{{item.rulings}}</span></li>
-              <li class="tk-valinta-li tk-valinta-excludes"><span class="excludesHeader">{{excludes}}</span><span class="tk-valinta-textContent tk-valinta-excludesContent">{{item.excludes}}</span></li>
-              <li class="tk-valinta-li tk-valinta-keywords"><span class="keywordsHeader">{{keywords}}</span><span class="tk-valinta-textContent tk-valinta-keywordsContent">{{item.keywords}}</span></li>
-              <li class="tk-valinta-li tk-valinta-changes"><span class="changesHeader">{{changes}}</span><span class="tk-valinta-textContent tk-valinta-changesContent">{{item.changes}}</span></li>
+            <h3 class="stat-result-h3"><span class="classCode stat-result-classCode">{{item.code}}</span> <span class="className stat-result-className">{{item.name}}</span></h3>
+            <ul class="stat-result-ul">
+              <li class="stat-result-li description stat-result-description">{{item.note}}</li> 
+              <li class="stat-result-li stat-result-includes"><span class="includesHeader">{{includes}}</span><span class="stat-result-textContent stat-result-includesContent">{{item.includes}}</span></li>
+              <li class="stat-result-li stat-result-includesAlso"><span class="includesAlsoHeader">{{includesAlso}}</span><span class="stat-result-textContent stat-result-includesAlsoContent">{{item.includesAlso}}</span></li>
+              <li class="stat-result-li stat-result-rulings"><span class="rulingsHeader">{{rulings}}</span><span class="stat-result-textContent stat-result-rulingsContent">{{item.rulings}}</span></li>
+              <li class="stat-result-li stat-result-excludes"><span class="excludesHeader">{{excludes}}</span><span class="stat-result-textContent stat-result-excludesContent">{{item.excludes}}</span></li>
+              <li class="stat-result-li stat-result-keywords"><span class="keywordsHeader">{{keywords}}</span><span class="stat-result-textContent stat-result-keywordsContent">{{item.keywords}}</span></li>
+              <li class="stat-result-li stat-result-changes"><span class="changesHeader">{{changes}}</span><span class="stat-result-textContent stat-result-changesContent">{{item.changes}}</span></li>
             </ul>
           </div>
         </template>

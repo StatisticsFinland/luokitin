@@ -25,43 +25,38 @@ Katso Polymerin tarkemmat [ohjeet](https://polymer-library.polymer-project.org/3
 
 ### Komponentit
 
-**tk-luokkahaku**
+**stat-search**
 
 Hakukenttä luokituksen luokkien suodattamiseen.
 
-**tk-luokituspuu**
+**stat-tree**
 
 Luokitus selattavana hierarkisena listana.
 
-**tk-valinta**
+**stat-result**
 
 Näyttää valitun luokan tiedot.
 
-**tk-lahdeluokitus**
+**stat-buttons**
 
 Linkityksen aiempien ja nykyisten luokitusversioiden välillä.
 *Kehitetty vain Rakennusluokitinta varten.*
 
-**tk-luokitushaku**
-
-Tarjoaa luokituksen haun ja valinnan.
-*Vanhentunut. Toimintaan saattaminen vaatii jatkokehitystä.*
-
 ### Komponenttien ominaisuudet
  Voit määritellä komponenteille kielen (fi/en/sv):
 ```sh
-<tk-luokkahaku language="en"></tk-luokkahaku>
+<stat-search language="en"></stat-search>
 ```
-tai käytettävän luokituksen esim:
+tai käytettävän luokituksen:
 ```sh
-<tk-luokituspuu classification="rakennus_1_20180712"></tk-luokituspuu>
+<stat-tree classification="rakennus_1_20180712"></stat-tree>
 ```
 
 ### Tapahtumakuuntelijat
-Komponentit kommunikoivat keskenään tapahtumilla (events). Esimerkiksi yksittäisen luokan klikkaaminen triggeröi tk-luokkahaku-luokka tapahtuman, joka välittää klikatun luokan tiedot tapahtumaa kuuntelevalle koodille. Täten luokan voi vastaanottaa myös muualla, kuin tämän projektin koodissa. Tällä hetkellä komponentit lähettävät tai kuuntelevat näitä tapahtumia:
+Komponentit kommunikoivat keskenään tapahtumilla (events). Esimerkiksi yksittäisen luokan klikkaaminen triggeröi stat-class tapahtuman, joka välittää klikatun luokan tiedot tapahtumaa kuuntelevalle koodille. Täten luokan voi vastaanottaa myös muualla, kuin tämän projektin koodissa. Tällä hetkellä komponentit lähettävät tai kuuntelevat näitä tapahtumia:
 ```sh
-tk-luokitushaku-luokitus
-tk-luokkahaku-luokka
+stat-classification
+stat-class
 ```
 
 ### Selainyhteensopivuus

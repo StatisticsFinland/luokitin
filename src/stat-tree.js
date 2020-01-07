@@ -106,27 +106,27 @@ class StatTree extends PolymerElement {
     }
   }
 
-  // Sends class with an event to be listened. Sends double event, to trigger tk-valinta component rendering again as a temporary solution to "tähän ei kuulu" and others not rendering correctly.
+  // Sends class with an event to be listened. Sends double event, to trigger stat-result component rendering again as a temporary solution to "tähän ei kuulu" and others not rendering correctly.
   _itemSelected(targetItem) {
-    let _selected = this.shadowRoot.querySelector(".tk-luokituspuu-template").itemForElement(targetItem)
+    let _selected = this.shadowRoot.querySelector(".stat-tree-template").itemForElement(targetItem)
     if (this.isCorrespondenceClasses) {
       if (this.correspondingClasses && this.correspondingClasses.indexOf(_selected) != -1) {
-        window.dispatchEvent(new CustomEvent('tk-luokkahaku-luokka', {
+        window.dispatchEvent(new CustomEvent('stat-class', {
           detail: _selected
         }))
-        window.dispatchEvent(new CustomEvent('tk-luokkahaku-luokka', {
+        window.dispatchEvent(new CustomEvent('stat-class', {
           detail: _selected
         }))
       } else {
-        window.dispatchEvent(new CustomEvent('tk-luokkahaku-luokka', {
+        window.dispatchEvent(new CustomEvent('stat-class', {
           detail: "ei avain luokka"
         }))
       }
     } else {
-      window.dispatchEvent(new CustomEvent('tk-luokkahaku-luokka', {
+      window.dispatchEvent(new CustomEvent('stat-class', {
         detail: _selected
       }))
-      window.dispatchEvent(new CustomEvent('tk-luokkahaku-luokka', {
+      window.dispatchEvent(new CustomEvent('stat-class', {
         detail: _selected
       }))
     }
@@ -137,7 +137,7 @@ class StatTree extends PolymerElement {
     let url = "https://data.stat.fi/api/classifications/v2/classifications/" + this.classification + "/classificationItems?content=data&meta=max&lang=" + this.language
     await fetch(url)
       .then((response) => {
-        this.shadowRoot.querySelector('.tk-luokituspuu-body').setAttribute('hidden', true);
+        this.shadowRoot.querySelector('.stat-tree-body').setAttribute('hidden', true);
         return response.json();
       })
       .then((json) => {
@@ -148,7 +148,7 @@ class StatTree extends PolymerElement {
       })
       .then((json) => {
         this.renderData(json)
-        this.shadowRoot.querySelector('.tk-luokituspuu-body').removeAttribute('hidden');
+        this.shadowRoot.querySelector('.stat-tree-body').removeAttribute('hidden');
       })
 
   }
@@ -325,25 +325,22 @@ class StatTree extends PolymerElement {
       this.push("classes", item)
     }
     this.level = levelCalc
-    window.dispatchEvent(new CustomEvent('tk-lataus-valmis', {
-      detail: this.classification
-    }))
   }
 
   addEventListeners() {
-    // If classification is given by tk-luokitushaku element, set that classification and fetch data
-    window.addEventListener('tk-luokitushaku-luokitus', e => {
+    // If classification or correspondence classes is given, set that classification and fetch data
+    window.addEventListener('stat-classification', e => {
       this.isCorrespondenceClasses = false
       if (e.detail.correspondenceClasses) {
         this.isCorrespondenceClasses = e.detail.correspondenceClasses
       }
       this.classification = e.detail.classificationId
-      this.shadowRoot.querySelector(".tk-luokituspuu-body").style.visibility = "visible"
+      this.shadowRoot.querySelector(".stat-tree-body").style.visibility = "visible"
       this.setLanguage()
       this.fetchData()
     })
     // Opens classification tree at the spot of the received clss.
-    window.addEventListener('tk-luokkahaku-luokka', e => {
+    window.addEventListener('stat-class', e => {
       this.selectedClass = e.detail
       this.openTree(e)
       this.renderListElements()
@@ -421,27 +418,27 @@ class StatTree extends PolymerElement {
         text-decoration: underline;
       }
 
-      .tk-luokituspuu-body {
+      .stat-tree-body {
         visibility: visible;
         @apply --shadow-elevation-2dp;
         background-color: #0073b0;
       }
   
-      .tk-luokituspuu-header {
+      .stat-tree-header {
         display: flex;
         justify-content: space-between;
       }
   
-      .tk-luokituspuu-open {
+      .stat-tree-open {
         color: white;
         margin-right: 0.5em;
       }
   
-      .tk-luokituspuu-open:hover {
+      .stat-tree-open:hover {
         cursor: pointer;      
       }
   
-      .tk-luokituspuu-ul {
+      .stat-tree-ul {
         padding-left:5px;    
         background-color: white;     
         list-style-type: none; 
@@ -449,19 +446,19 @@ class StatTree extends PolymerElement {
         @apply --shadow-elevation-2dp;       
       }
   
-      .tk-luokituspuu-li {
+      .stat-tree-li {
         white-space: pre;
         overflow: hidden;
         text-overflow: ellipsis;
         padding-bottom: 2.5px;
       }
 
-      .tk-luokituspuu-li:hover {
+      .stat-tree-li:hover {
         background-color: #e0effa;
         cursor: pointer;      
       }
   
-      .tk-luokituspuu-h1 {
+      .stat-tree-h1 {
         color: white;      
         @apply --paper-font-headline;
         padding-left: 20px;      
@@ -473,13 +470,13 @@ class StatTree extends PolymerElement {
       }
       </style>
 
-      <div class="tk tk-luokituspuu-body">
-        <div class="tk-luokituspuu-header">
-          <h1 class="tk-luokituspuu-h1">{{classificationName}}</h1> <a on-click="handleOpen" class="tk-luokituspuu-open">{{openAllText}}</a>
+      <div class="stat-tree-body">
+        <div class="stat-tree-header">
+          <h1 class="stat-tree-h1">{{classificationName}}</h1> <a on-click="handleOpen" class="stat-tree-open">{{openAllText}}</a>
         </div>
-        <ul class="tk-luokituspuu-ul">
-            <template class="tk-luokituspuu-template" is="dom-repeat" items="{{classes}}" filter="isVisible" observe="visible item.visible">
-              <li class="tk-luokituspuu-li" on-click="open" id="{{item.localId}}" title="{{item.name}}"><span class="intendation tk-luokituspuu-intendation">{{item.intendation}}</span><span class="classCode tk-luokituspuu-classCode">{{item.code}}</span>      <span class="className tk-luokituspuu-className">{{item.name}}</span></li>
+        <ul class="stat-tree-ul">
+            <template class="stat-tree-template" is="dom-repeat" items="{{classes}}" filter="isVisible" observe="visible item.visible">
+              <li class="stat-tree-li" on-click="open" id="{{item.localId}}" title="{{item.name}}"><span class="intendation stat-tree-intendation">{{item.intendation}}</span><span class="classCode stat-tree-classCode">{{item.code}}</span>      <span class="className stat-tree-className">{{item.name}}</span></li>
             </template>
         </ul>
       </div>
@@ -487,7 +484,7 @@ class StatTree extends PolymerElement {
   }
 
   render() {
-    this.shadowRoot.querySelector(".tk-luokituspuu-template").render()
+    this.shadowRoot.querySelector(".stat-tree-template").render()
   }
 }
 

@@ -51,19 +51,19 @@ class StatSearch extends PolymerElement {
 
   addEventListeners() {
     this.addEventListener('keyup', this.resultSearch.bind(this));
-    window.addEventListener('tk-luokitushaku-luokitus', e => {
+    window.addEventListener('stat-classification', e => {
       this.resultSearchField = "";
       this.isCorrespondenceClasses = false
       if (e.detail.correspondenceClasses) {   // If event carries boolean true correspondenceClasses, set a variable to indicate that the classification contains correspondence classes. 
         this.isCorrespondenceClasses = e.detail.correspondenceClasses
       }
       this.classification = e.detail.classificationId
-      this.shadowRoot.querySelector(".tk-luokkahaku-body").style.visibility = "visible"
+      this.shadowRoot.querySelector(".stat-search-body").style.visibility = "visible"
       this.$.mainList.setAttribute("hidden", true)
       this.fetchData()
     })
     window.addEventListener('click', e => {   // For hiding the search results box, if clicked anywhere outside it.
-      if (e.srcElement.tagName.toLowerCase() !== "tk-luokkahaku") {
+      if (e.srcElement.tagName.toLowerCase() !== "stat-search") {
         this.$.mainList.setAttribute("hidden", true)
       }
     })
@@ -78,24 +78,24 @@ class StatSearch extends PolymerElement {
     this.notifyPath('placeHolderText')
   }
 
-  // Sends class with an event to be listened. Sends double event, to trigger tk-valinta component rendering correctly, as a temporary solution.
+  // Sends class with an event to be listened. Sends double event, to trigger stat-result component rendering correctly, as a temporary solution.
   _itemSelected(e) {
-    let _selected = this.shadowRoot.querySelector(".tk-luokkahaku-template").itemForElement(e.target)
+    let _selected = this.shadowRoot.querySelector(".stat-search-template").itemForElement(e.target)
     this.resultSearchField = this.cutSearchField(_selected, this.resultSearchField)
     if (this.isCorrespondenceClasses) {
       if (this.correspondingClasses.indexOf(_selected) != -1) {
-        window.dispatchEvent(new CustomEvent('tk-luokkahaku-luokka', {
+        window.dispatchEvent(new CustomEvent('stat-class', {
           detail: _selected
         }))
-        window.dispatchEvent(new CustomEvent('tk-luokkahaku-luokka', {
+        window.dispatchEvent(new CustomEvent('stat-class', {
           detail: _selected
         }))
       }
     } else {
-      window.dispatchEvent(new CustomEvent('tk-luokkahaku-luokka', {
+      window.dispatchEvent(new CustomEvent('stat-class', {
         detail: _selected
       }))
-      window.dispatchEvent(new CustomEvent('tk-luokkahaku-luokka', {
+      window.dispatchEvent(new CustomEvent('stat-class', {
         detail: _selected
       }))
     }
@@ -194,7 +194,7 @@ class StatSearch extends PolymerElement {
       this.$.mainList.setAttribute("hidden", true)
     } else {
       this.$.mainList.removeAttribute("hidden")
-      this.shadowRoot.querySelector(".tk-luokkahaku-template").render();
+      this.shadowRoot.querySelector(".stat-search-template").render();
     }
   }
 
@@ -349,11 +349,11 @@ class StatSearch extends PolymerElement {
        font-size: 12pt;     
       }
   
-      .tk-luokkahaku-body {
+      .stat-search-body {
         visibility: visible;      
       }
   
-      .tk-luokkahaku-ul {
+      .stat-search-ul {
         padding-left:5px;    
         background-color: white;     
         list-style-type: none;  
@@ -367,18 +367,18 @@ class StatSearch extends PolymerElement {
       }
   
       @media (max-width:960px) {
-        .tk-luokkahaku-ul {
+        .stat-search-ul {
           width: 100%;
           max-height: 250px;
         }
       }
 
-      .tk-luokkahaku-li:hover {
+      .stat-search-li:hover {
         background-color: #e0effa;
         cursor: pointer;      
       }
   
-      .tk-luokkahaku-input {
+      .stat-search-input {
         width: 100%;
         padding: 8px 16px;
         border: 1px solid #bcbcbc;
@@ -391,32 +391,32 @@ class StatSearch extends PolymerElement {
         @apply --shadow-elevation-2dp;    
       }
   
-      .tk-luokkahaku-input::-webkit-search-cancel-button {
+      .stat-search-input::-webkit-search-cancel-button {
         position:relative;
         right:20px;    
       }
   
-      .tk-luokkahaku-input::-ms-clear{
+      .stat-search-input::-ms-clear{
         margin-right:20px  
       }
   
-      .tk-luokkahaku-input:focus {
+      .stat-search-input:focus {
         border: 0.25px solid #e0effa;
         @apply --shadow-elevation-4dp;              
       }
   
-      .tk-luokkahaku-iron-input {        /* When styling input, you may need to apply same styles to iron-input too. */
+      .stat-search-iron-input {        /* When styling input, you may need to apply same styles to iron-input too. */
         width: 100%;
       }
     </style>
 
-    <div class="tk tk-luokkahaku-body">
-      <iron-input class="tk-luokkahaku-iron-input" bind-value="{{resultSearchField}}">
-        <input class="tk-luokkahaku-input" id="resultSearch" type="search" is="iron-input" placeholder={{placeHolderText}}>
+    <div class="stat-search-body">
+      <iron-input class="stat-search-iron-input" bind-value="{{resultSearchField}}">
+        <input class="stat-search-input" id="resultSearch" type="search" is="iron-input" placeholder={{placeHolderText}}>
       </iron-input>
-      <ul class="tk-luokkahaku-ul" id="mainList" hidden>
-        <template class="tk-luokkahaku-template" is="dom-repeat" items="{{results}}" filter="isVisible" observe="visible item.visible">
-          <li class="tk-luokkahaku-li" title="{{item.note}}" on-click="_itemSelected" id="{{item.localId}}" name="{{item.name}}"><span class="classCode tk-luokkahaku-classCode">{{item.code}}</span> <span class="className tk-luokkahaku-className">{{item.name}}</span></li>
+      <ul class="stat-search-ul" id="mainList" hidden>
+        <template class="stat-search-template" is="dom-repeat" items="{{results}}" filter="isVisible" observe="visible item.visible">
+          <li class="stat-search-li" title="{{item.note}}" on-click="_itemSelected" id="{{item.localId}}" name="{{item.name}}"><span class="classCode stat-search-classCode">{{item.code}}</span> <span class="className stat-search-className">{{item.name}}</span></li>
         </template>
       </ul>
     </div>
