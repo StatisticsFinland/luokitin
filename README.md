@@ -16,7 +16,7 @@ Asenna luokittimen paketit esim. ```npm install```.
 
 Aja ```polymer serve```.
 
-Avaa selaimessa http://127.0.0.1:8081/.
+Avaa selaimessa ohjelman antama osoite (oletuksena http://127.0.0.1:8081/).
 
 ### Tuotantoon
 ```polymer build```
@@ -43,6 +43,10 @@ Näyttää valitun luokan tiedot.
 
 Linkityksen aiempien ja nykyisten luokitusversioiden välillä.
 *Kehitetty vain Rakennusluokitinta varten.*
+
+**(index.html)**
+
+Esimerkkitiedosto web-komponenttien käytöstä.
 
 ### Komponenttien ominaisuudet
  Voit määritellä komponenteille kielen (fi/en/sv):
