@@ -6,19 +6,22 @@ Luokitin on luokitusten ja luokkien hakemiseen, selaamiseen ja valitsemiseen tar
 **[Rakennusluokitin](https://www.stat.fi/rakennusluokitin)**
 **[Toimialaluokitin](http://pxnet2.stat.fi/fi/luokitukset/toimialaluokitin.html)** 
 
-### Kehitys
+### Käyttö
 
 Lataa luokitin.
 
 Asenna [Polymer](https://polymer-library.polymer-project.org/3.0/docs/install-3-0) esim. ```npm install -g polymer-cli```.
 
-Asenna luokittimen paketit esim. ```npm install```.
+Asenna luokittimen paketit esim. ```npm i```.
+
+#### Kehitys
 
 Aja ```polymer serve```.
 
 Avaa selaimessa ohjelman antama osoite (oletuksena http://127.0.0.1:8081/).
 
-### Tuotantoon
+#### Tuotantoon
+```npm i```
 ```polymer build```
 
 Projektiin ilmestyy build kansio, jonka sisältä löytyvät tuotantoa varten optimoidut tiedostot.
