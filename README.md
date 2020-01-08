@@ -27,7 +27,7 @@ Avaa selaimessa ohjelman antama osoite (oletuksena http://127.0.0.1:8081/).
 
 Projektiin ilmestyy optimioitu build kansio.
 
-Katso Polymerin tarkemmat [ohjeet] buildaamisesta (https://polymer-library.polymer-project.org/3.0/docs/apps/build-for-production).
+Katso Polymerin tarkemmat [ohjeet](https://polymer-library.polymer-project.org/3.0/docs/apps/build-for-production) buildaamisesta .
 
 ### Komponentit
 
