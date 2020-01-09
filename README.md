@@ -23,6 +23,7 @@ Avaa selaimessa ohjelman antama osoite (oletuksena http://127.0.0.1:8081/).
 ##### Tuotantoon
 
 ```npm i```
+ja
 ```polymer build```
 
 Projektiin ilmestyy optimioitu build kansio.
