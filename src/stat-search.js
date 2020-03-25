@@ -310,10 +310,10 @@ class StatSearch extends PolymerElement {
           item.excludes = item.explanatoryNotes[0].excludes[item.explanatoryNotes[0].excludes.length - 1]
         }
         if (item.explanatoryNotes[0].rulings) {
-          item.rulings = notes.rulings[notes.rulings.length - 1]
+          item.rulings = item.explanatoryNotes[0].rulings[item.explanatoryNotes[0].rulings.length - 1]
         }
         if (item.explanatoryNotes[0].changes) {
-          item.changes = notes.changes[notes.changes.length - 1]
+          item.changes = item.explanatoryNotes[0].changes[item.explanatoryNotes[0].changes.length - 1]
         }
       } else {
         item.note = ""
